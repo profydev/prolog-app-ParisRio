@@ -144,14 +144,11 @@ const LinkList = styled(List)`
   flex: 1;
 `;
 
-const CollapseMenuItem = styled(MenuItemButton)<{
-  isSidebarCollapsed: boolean;
-}>`
+const CollapseMenuItem = styled(MenuItemButton)`
   display: none;
   @media (min-width: ${breakpoint("desktop")}) {
     display: flex;
-    transform: ${({ isSidebarCollapsed }) =>
-      isSidebarCollapsed && "rotate(180deg)"};
+    transform: ${({ isCollapsed }) => isCollapsed && "rotate(180deg)"};
   }
 `;
 
@@ -199,7 +196,6 @@ export function SidebarNavigation() {
               onClick={() => alert("Support")}
             />
             <CollapseMenuItem
-              isSidebarCollapsed={isSidebarCollapsed}
               text="Collapse"
               iconSrc="/icons/arrow-left.svg"
               isCollapsed={isSidebarCollapsed}
