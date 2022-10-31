@@ -189,15 +189,12 @@ export function SidebarNavigation() {
           </LinkList>
 
           <List>
-            <MenuItemButton
+            <MenuItemLink
               text="Support"
+              href="mailto:support@prolog-app.com?subject=Support Request: "
               iconSrc="/icons/support.svg"
+              isActive={false}
               isCollapsed={isSidebarCollapsed}
-              onClick={() =>
-                window.location.assign(
-                  "mailto:support@prolog-app.com?subject=Support Request: "
-                )
-              }
             />
             <CollapseMenuItem
               text="Collapse"
