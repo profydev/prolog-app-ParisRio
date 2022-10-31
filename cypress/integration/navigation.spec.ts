@@ -26,6 +26,17 @@ describe("Sidebar Navigation", () => {
       cy.url().should("eq", "http://localhost:3000/dashboard/settings");
     });
 
+    it("opens user email app by clicking the support button", () => {
+      // check that support button opens the user’s mail app
+      cy.get("nav")
+        .contains("Support")
+        .should(
+          "have.attr",
+          "href",
+          "mailto:support@prolog-app.com?subject=Support Request: "
+        );
+    });
+
     it("is collapsible", () => {
       // collapse navigation
       cy.get("nav").contains("Collapse").click();
@@ -36,17 +47,6 @@ describe("Sidebar Navigation", () => {
 
       // check that text is not rendered
       cy.get("nav").contains("Issues").should("not.exist");
-    });
-
-    it("opens user email app by clicking the support button", () => {
-      // check that support button should open the user’s mail app
-      cy.get("nav")
-        .contains("Support")
-        .should(
-          "have.attr",
-          "href",
-          "mailto:support@prolog-app.com?subject=Support Request: "
-        );
     });
   });
 
