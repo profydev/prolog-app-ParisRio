@@ -6,7 +6,8 @@ import { NavigationContext } from "./navigation-context";
 import { MenuItemButton } from "./menu-item-button";
 import { MenuItemLink } from "./menu-item-link";
 import { Button } from "@features/ui";
-import { breakpoint, color, space, zIndex } from "@styles/theme";
+import { breakpoint, color, space, zIndex, theme } from "@styles/theme";
+import { useIsDesktop } from "@hooks/useIsDesktop";
 
 const menuItems = [
   { text: "Projects", iconSrc: "/icons/projects.svg", href: Routes.projects },
@@ -152,17 +153,21 @@ const CollapseMenuItem = styled(MenuItemButton)`
   }
 `;
 
+const themeDestkopWidth = parseFloat(theme.breakpoint.desktop) * 16;
+
 export function SidebarNavigation() {
   const router = useRouter();
   const { isSidebarCollapsed, toggleSidebar } = useContext(NavigationContext);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isDesktop = useIsDesktop(themeDestkopWidth);
+
   return (
     <Container isCollapsed={isSidebarCollapsed}>
       <FixedContainer>
         <Header>
           <Logo
             src={
-              isSidebarCollapsed
+              isSidebarCollapsed && isDesktop
                 ? "/icons/logo-small.svg"
                 : "/icons/logo-large.svg"
             }
