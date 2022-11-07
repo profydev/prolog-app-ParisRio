@@ -1,4 +1,4 @@
-import { useWindowWith } from "./useWindowWidth";
+import { useWindowWith } from "@hooks/useWindowWidth";
 
 export function useIsDesktop(desktopWidth: number): boolean {
   const windowWidth = useWindowWith();

@@ -153,12 +153,14 @@ const CollapseMenuItem = styled(MenuItemButton)`
   }
 `;
 
-const themeDestkopWidth = parseFloat(theme.breakpoint.desktop) * 16;
+const breakpointDesktop = breakpoint("desktop")({ theme });
+const themeDestkopWidth = parseFloat(breakpointDesktop) * 16;
 
 export function SidebarNavigation() {
   const router = useRouter();
   const { isSidebarCollapsed, toggleSidebar } = useContext(NavigationContext);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const isDesktop = useIsDesktop(themeDestkopWidth);
 
   return (
