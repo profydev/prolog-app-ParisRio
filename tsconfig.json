@@ -19,7 +19,8 @@
       "@styles/*": ["styles/*"],
       "@config/*": ["config/*"],
       "@features/*": ["features/*"],
-      "@typings/*": ["typings/*"]
+      "@typings/*": ["typings/*"],
+      "@hooks/*": ["hooks/*"]
     },
     "noEmit": true
   },

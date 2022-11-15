@@ -37,6 +37,12 @@ describe("Sidebar Navigation", () => {
         );
     });
 
+    it("checks that large logo is displayed in desktop resolution with nav not collapsed", () => {
+      cy.get("header")
+        .find("img")
+        .should("have.attr", "src", "/icons/logo-large.svg");
+    });
+
     it("is collapsible", () => {
       // collapse navigation
       cy.get("nav").contains("Collapse").click();
@@ -47,6 +53,11 @@ describe("Sidebar Navigation", () => {
 
       // check that text is not rendered
       cy.get("nav").contains("Issues").should("not.exist");
+
+      //check that small logo is displayed in desktop resolution with nav collapsed
+      cy.get("header")
+        .find("img")
+        .should("have.attr", "src", "/icons/logo-small.svg");
     });
   });
 
@@ -96,6 +107,12 @@ describe("Sidebar Navigation", () => {
       cy.get("img[alt='close menu']").click();
       cy.wait(500);
       isNotInViewport("nav");
+    });
+
+    it("checks that large logo is displayed in mobile resolution", () => {
+      cy.get("header")
+        .find("img")
+        .should("have.attr", "src", "/icons/logo-large.svg");
     });
   });
 });
