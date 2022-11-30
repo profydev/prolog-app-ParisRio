@@ -22,6 +22,7 @@ const Container = styled.div`
 `;
 
 const Main = styled.main`
+  flex-direction: column;
   flex: 1;
 `;
 
@@ -69,8 +70,8 @@ export function PageContainer({ children, title, info }: PageContainerProps) {
           <Info>{info}</Info>
           {children}
         </ContentContainer>
+        <Footer />
       </Main>
-      <Footer />
     </Container>
   );
 }
