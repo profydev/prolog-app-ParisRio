@@ -1,6 +1,7 @@
-import { breakpoint, color, space } from "@styles/theme";
+import { breakpoint, color, space, textFont } from "@styles/theme";
 import styled, { css } from "styled-components";
 import { MenuItemLink } from "./menu-item-link";
+import PackageJson from "../../../package.json";
 
 const footerLinkItems = [
   { text: "Docs", href: "/" },
@@ -25,7 +26,9 @@ const Container = styled.div`
 `;
 
 const Version = styled.div`
+  color: ${color("gray", 400)};
   margin-left: ${space(8)};
+  ${textFont("md", "regular")};
 `;
 
 const Nav = styled.nav``;
@@ -39,7 +42,7 @@ const Logo = styled.img`
 export function Footer() {
   return (
     <Container>
-      <Version>XXX</Version>
+      <Version>Version: {PackageJson.version}</Version>
       <Nav>
         <LinkList>
           {footerLinkItems.map((footerItem, index) => (
