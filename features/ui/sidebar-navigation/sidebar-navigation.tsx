@@ -164,7 +164,7 @@ export function SidebarNavigation() {
   const isDesktop = useIsDesktop(themeDestkopWidth);
 
   return (
-    <Container isCollapsed={isSidebarCollapsed}>
+    <Container id="sidebar-navigation" isCollapsed={isSidebarCollapsed}>
       <FixedContainer>
         <Header>
           <Logo
