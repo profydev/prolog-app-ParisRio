@@ -11,7 +11,6 @@ describe("footer navigation", () => {
     it("checks that footer is correctly displayed", () => {
       cy.get("#footer").should("exist");
     });
-    //should have the correct version name
     it("checks that there are four links", () => {
       cy.get("#footer nav").find("a").should("have.length", 4);
     });
