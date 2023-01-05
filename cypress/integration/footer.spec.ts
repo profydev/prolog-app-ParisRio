@@ -27,7 +27,7 @@ describe("footer navigation", () => {
       cy.viewport("iphone-8");
     });
 
-    it("check that mobile footer is displayed with the logo at the last child of footer container", () => {
+    it("checks that mobile footer is displayed with the logo at the last child of footer container", () => {
       cy.get("#footer:last-child").contains("Version");
     });
   });
