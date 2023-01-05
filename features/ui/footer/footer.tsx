@@ -23,7 +23,7 @@ const containerStyles = css`
   }
 `;
 
-const Container = styled.div`
+const Container = styled.footer`
   ${containerStyles}
 `;
 
@@ -57,7 +57,7 @@ const Logo = styled.img`
 
 export function Footer() {
   return (
-    <Container>
+    <Container id="footer">
       <Version>Version: {PackageJson.version}</Version>
       <Nav>
         <LinkList>
