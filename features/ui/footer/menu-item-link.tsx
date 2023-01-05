@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
-import { color, space } from "@styles/theme";
+import { color, space, textFont } from "@styles/theme";
 
 type MenuItemProps = {
   text: string;
@@ -22,6 +22,7 @@ export const Anchor = styled.a`
   align-items: center;
   color: ${color("gray", 500)};
   text-decoration: none;
+  ${textFont("md", "medium")}
 `;
 
 export function MenuItemLink({ text, href }: MenuItemProps) {

@@ -12,12 +12,14 @@ const footerLinkItems = [
 
 const containerStyles = css`
   width: 100%;
-  height: 3.75rem;
   display: flex;
+  flex-direction: column;
   background-color: ${color("gray", 50)};
-  justify-content: space-between;
   align-items: center;
   @media (min-width: ${breakpoint("desktop")}) {
+    flex-direction: row;
+    justify-content: space-between;
+    height: 3.75rem;
   }
 `;
 
@@ -27,16 +29,30 @@ const Container = styled.div`
 
 const Version = styled.div`
   color: ${color("gray", 400)};
-  margin-left: ${space(8)};
   ${textFont("md", "regular")};
+  margin: ${space(0, 0, 6, 0)};
+  order: 1;
+  @media (min-width: ${breakpoint("desktop")}) {
+    margin: ${space(0, 0, 0, 8)};
+    order: 0;
+  }
 `;
 
 const Nav = styled.nav``;
+
 const LinkList = styled.ul`
   display: flex;
+  margin: ${space(6, 0, 0, 0)};
+  padding: ${space(0, 0, 0, 0)};
+  @media (min-width: ${breakpoint("desktop")}) {
+    margin: ${space(0, 0, 0, 0)};
+  }
 `;
 const Logo = styled.img`
-  margin-right: ${space(8)};
+  margin: ${space(6, 0, 6, 0)};
+  @media (min-width: ${breakpoint("desktop")}) {
+    margin: ${space(0, 8, 0, 0)};
+  }
 `;
 
 export function Footer() {
