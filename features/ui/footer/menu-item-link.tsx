@@ -12,9 +12,6 @@ export const ListItem = styled.li`
   display: flex;
   align-items: center;
   padding: ${space(0, 3)};
-  &:first-child {
-    /* margin-top: 0; */
-  }
 `;
 
 export const Anchor = styled.a`
