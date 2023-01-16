@@ -9,13 +9,22 @@ describe("Project List", () => {
 
     // open projects page
     cy.visit("http://localhost:3000/dashboard");
+  });
 
-    // wait for request to resolve
-    cy.wait("@getProjects");
+  context("loading indicator while API request is not resolved", () => {
+    beforeEach(() => {
+      cy.viewport(1025, 900);
+    });
+
+    it("test that loading indicator appears", () => {
+      cy.get("#loadingIndicator").should("exist");
+    });
   });
 
   context("desktop resolution", () => {
     beforeEach(() => {
+      // wait for request to resolve
+      cy.wait("@getProjects");
       cy.viewport(1025, 900);
     });
 

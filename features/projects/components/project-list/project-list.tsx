@@ -1,7 +1,8 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { ProjectCard } from "../project-card";
 import { useProjects } from "../../api/use-projects";
-import { breakpoint, color, space } from "@styles/theme";
+import { breakpoint, space } from "@styles/theme";
+import { LoadingIndicator } from "@features/ui";
 
 const List = styled.ul`
   display: grid;
@@ -17,79 +18,24 @@ const List = styled.ul`
     grid-template-columns: repeat(auto-fit, 400px);
   }
 `;
-
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const LoadingIndicator = styled.div`
+const LoadingIndicatorContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-  animation: ${rotate} 2s linear infinite;
-`;
-
-const ExteriorCircle = styled.div`
-  height: 64px;
-  width: 64px;
-  background-color: ${color("primary", 50)};
-  border-radius: 50%;
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-`;
-
-const QuarterCircle = styled.div`
-  height: 32px;
-  width: 32px;
-  background-color: ${color("primary", 600)};
-  border-radius: 0 32px 0 0;
-  top: 0;
-  right: 0;
-  position: absolute;
-  z-index: 3;
-`;
-const QuarterCircleEndTop = styled.div`
-  height: 6px;
-  width: 6px;
-  background-color: ${color("primary", 600)};
-  border-radius: 6px;
-  top: 0;
-  position: absolute;
-  z-index: 3;
-`;
-const QuarterCircleEndBottom = styled.div`
-  height: 6px;
-  width: 6px;
-  background-color: ${color("primary", 600)};
-  border-radius: 6px;
-  right: 0;
-  position: absolute;
-  z-index: 3;
-`;
-
-const InteriorCircle = styled.div`
-  height: 52px;
-  width: 52px;
-  background-color: white;
-  border-radius: 50%;
-  position: absolute;
-  z-index: 3;
+  margin-top: 10rem;
+  @media screen {
+    margin-top: 8.5rem;
+  }
 `;
 
 export function ProjectList() {
   const { data, isLoading, isError, error } = useProjects();
-  //if (isLoading)
+
   if (isLoading) {
-    return <LoadingIndicator>Yo</LoadingIndicator>;
+    return (
+      <LoadingIndicatorContainer>
+        <LoadingIndicator />
+      </LoadingIndicatorContainer>
+    );
   }
 
   if (isError) {
@@ -98,23 +44,12 @@ export function ProjectList() {
   }
 
   return (
-    <LoadingIndicator>
-      <ExteriorCircle>
-        <QuarterCircle />
-        <QuarterCircleEndTop />
-        <QuarterCircleEndBottom />
-        <InteriorCircle />
-      </ExteriorCircle>
-    </LoadingIndicator>
+    <List>
+      {data?.map((project) => (
+        <li key={project.id}>
+          <ProjectCard project={project} />
+        </li>
+      ))}
+    </List>
   );
-
-  // return (
-  //   <List>
-  //     {data?.map((project) => (
-  //       <li key={project.id}>
-  //         <ProjectCard project={project} />
-  //       </li>
-  //     ))}
-  //   </List>
-  // );
 }
