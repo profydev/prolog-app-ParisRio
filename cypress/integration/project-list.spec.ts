@@ -5,6 +5,7 @@ describe("Project List", () => {
     // setup request mock
     cy.intercept("GET", "https://prolog-api.profy.dev/project", {
       fixture: "projects.json",
+      delay: 2000,
     }).as("getProjects");
 
     // open projects page

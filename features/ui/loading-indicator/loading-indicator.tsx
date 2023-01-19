@@ -39,7 +39,7 @@ const QuarterCircle = styled.div`
   position: absolute;
   z-index: 3;
 `;
-const QuarterCircleEndTop = styled.div`
+const HalfCircleEndTop = styled.div`
   height: 6px;
   width: 6px;
   background-color: ${color("primary", 600)};
@@ -48,7 +48,7 @@ const QuarterCircleEndTop = styled.div`
   position: absolute;
   z-index: 3;
 `;
-const QuarterCircleEndBottom = styled.div`
+const HalfCircleEndBottom = styled.div`
   height: 6px;
   width: 6px;
   background-color: ${color("primary", 600)};
@@ -72,8 +72,8 @@ export function LoadingIndicator() {
     <Container id="loadingIndicator">
       <ExteriorCircle>
         <QuarterCircle />
-        <QuarterCircleEndTop />
-        <QuarterCircleEndBottom />
+        <HalfCircleEndTop />
+        <HalfCircleEndBottom />
         <InteriorCircle />
       </ExteriorCircle>
     </Container>
