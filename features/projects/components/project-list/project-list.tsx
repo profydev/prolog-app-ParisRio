@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { ProjectCard } from "../project-card";
 import { useProjects } from "../../api/use-projects";
 import { breakpoint, space } from "@styles/theme";
+import { LoadingIndicator } from "@features/ui";
 
 const List = styled.ul`
   display: grid;
@@ -17,12 +18,24 @@ const List = styled.ul`
     grid-template-columns: repeat(auto-fit, 400px);
   }
 `;
+const LoadingIndicatorContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 10rem;
+  @media screen {
+    margin-top: 8.5rem;
+  }
+`;
 
 export function ProjectList() {
   const { data, isLoading, isError, error } = useProjects();
 
   if (isLoading) {
-    return <div>Loading</div>;
+    return (
+      <LoadingIndicatorContainer>
+        <LoadingIndicator />
+      </LoadingIndicatorContainer>
+    );
   }
 
   if (isError) {

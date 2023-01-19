@@ -5,17 +5,27 @@ describe("Project List", () => {
     // setup request mock
     cy.intercept("GET", "https://prolog-api.profy.dev/project", {
       fixture: "projects.json",
+      delay: 2000,
     }).as("getProjects");
 
     // open projects page
     cy.visit("http://localhost:3000/dashboard");
+  });
 
-    // wait for request to resolve
-    cy.wait("@getProjects");
+  context("loading indicator while API request is not resolved", () => {
+    beforeEach(() => {
+      cy.viewport(1025, 900);
+    });
+
+    it("test that loading indicator appears", () => {
+      cy.get("#loadingIndicator").should("exist");
+    });
   });
 
   context("desktop resolution", () => {
     beforeEach(() => {
+      // wait for request to resolve
+      cy.wait("@getProjects");
       cy.viewport(1025, 900);
     });
 
