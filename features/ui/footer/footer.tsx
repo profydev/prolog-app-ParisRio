@@ -1,7 +1,6 @@
 import { breakpoint, color, space, textFont } from "@styles/theme";
 import styled, { css } from "styled-components";
 import { MenuItemLink } from "./menu-item-link";
-import PackageJson from "../../../package.json";
 
 const footerLinkItems = [
   { text: "Docs", href: "/" },
@@ -58,7 +57,7 @@ const Logo = styled.img`
 export function Footer() {
   return (
     <Container id="footer">
-      <Version>Version: {PackageJson.version}</Version>
+      <Version>Version: {process.env.version}</Version>
       <Nav>
         <LinkList>
           {footerLinkItems.map((footerItem, index) => (
