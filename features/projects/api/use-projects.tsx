@@ -3,7 +3,7 @@ import axios from "axios";
 import { Project } from "../types/project.types";
 
 async function getProjects() {
-  const { data } = await axios.get("https://prolog-api.profy.dev/projectERROR");
+  const { data } = await axios.get("https://prolog-api.profy.dev/projectAA");
   return data;
 }
 
