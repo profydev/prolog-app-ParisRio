@@ -29,16 +29,13 @@ const AlertContainer = styled.div`
 const AlertIcon = styled.img`
   padding-right: ${space(4)};
 `;
-const AlertMessage = styled.div`
-  color: ${color("error", 700)};
-`;
+const AlertMessage = styled.div``;
 const AlertButton = styled.div`
   display: flex;
   margin-left: auto;
   cursor: pointer;
 `;
 const AlertButtonText = styled.div`
-  color: ${color("error", 700)};
   padding-right: ${space(3)};
   min-width: 3.875rem;
 `;
@@ -46,14 +43,20 @@ const AlertButtonArrow = styled.img``;
 
 export function ProjectAlert({ refetch }: ProjectAlertProps) {
   return (
-    <AlertContainer>
-      <AlertIcon src="/icons/alert-circle.svg" alt="logo" />
+    <AlertContainer id="alertContainer">
+      <AlertIcon
+        src="/icons/alert-circle.svg"
+        alt="alert-warning-exclamation"
+      />
       <AlertMessage>
         There was a problem while loading the project data
       </AlertMessage>
       <AlertButton onClick={() => refetch()}>
-        <AlertButtonText>Try again </AlertButtonText>
-        <AlertButtonArrow src="/icons/alert-arrow.svg" alt="logo" />
+        <AlertButtonText>Try again</AlertButtonText>
+        <AlertButtonArrow
+          src="/icons/alert-arrow.svg"
+          alt="alert-arrow-to-refetch"
+        />
       </AlertButton>
     </AlertContainer>
   );
