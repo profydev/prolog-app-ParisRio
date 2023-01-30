@@ -3,6 +3,7 @@ import { ProjectCard } from "../project-card";
 import { useProjects } from "../../api/use-projects";
 import { breakpoint, space } from "@styles/theme";
 import { LoadingIndicator } from "@features/ui";
+import { ProjectAlert } from "../project-alert";
 
 const List = styled.ul`
   display: grid;
@@ -22,13 +23,13 @@ const LoadingIndicatorContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 10rem;
-  @media screen {
+  @media (min-width: ${breakpoint("desktop")}) {
     margin-top: 8.5rem;
   }
 `;
 
 export function ProjectList() {
-  const { data, isLoading, isError, error } = useProjects();
+  const { data, isLoading, isError, error, refetch } = useProjects();
 
   if (isLoading) {
     return (
@@ -40,7 +41,7 @@ export function ProjectList() {
 
   if (isError) {
     console.error(error);
-    return <div>Error: {error.message}</div>;
+    return <ProjectAlert refetch={refetch} />;
   }
 
   return (
