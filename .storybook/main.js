@@ -19,6 +19,7 @@ module.exports = {
     config.resolve.alias["@styles"] = path.resolve("./styles");
     config.resolve.alias["@config"] = path.resolve("./config");
     config.resolve.alias["@features"] = path.resolve("./features");
+    config.resolve.alias["@hooks"] = path.resolve("./hooks");
     return config;
   },
 };
