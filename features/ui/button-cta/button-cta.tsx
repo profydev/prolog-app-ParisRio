@@ -18,24 +18,15 @@ export enum ButtonCtaColor {
   error = "error",
 }
 
-export enum ButtonCtaState {
-  default = "default",
-  hover = "hover",
-  focused = "focused",
-  disabled = "disabled",
-}
-
 type ButtonProps = {
   children: React.ReactNode;
   size?: ButtonCtaSize;
   color?: ButtonCtaColor;
-  state?: ButtonCtaState;
 };
 
 export const Container = styled.button<{
   size: ButtonCtaSize;
   color: ButtonCtaColor;
-  state: ButtonCtaState;
 }>`
   cursor: pointer;
 
@@ -94,242 +85,121 @@ export const Container = styled.button<{
   //Color and state
   ${(props) => {
     //Primary
-    if (
-      props.color === ButtonCtaColor.primary &&
-      props.state === ButtonCtaState.default
-    ) {
+    if (props.color === ButtonCtaColor.primary) {
       return css`
-        background: ${color("primary", 600)};
         color: white;
+        background: ${color("primary", 600)};
         border: 1px solid ${color("primary", 600)};
         box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-      `;
-    } else if (
-      props.color === ButtonCtaColor.primary &&
-      props.state === ButtonCtaState.hover
-    ) {
-      return css`
-        background: ${color("primary", 600)};
-        color: white;
-        border: 1px solid ${color("primary", 600)};
-        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-      `;
-    } else if (
-      props.color === ButtonCtaColor.primary &&
-      props.state === ButtonCtaState.focused
-    ) {
-      return css`
-        background: ${color("primary", 600)};
-        color: white;
-        border: 1px solid ${color("primary", 600)};
-        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
-          0px 0px 0px 4px ${color("primary", 100)};
-      `;
-    } else if (
-      props.color === ButtonCtaColor.primary &&
-      props.state === ButtonCtaState.disabled
-    ) {
-      return css`
-        background: ${color("primary", 200)};
-        color: white;
-        border: 1px solid ${color("primary", 200)};
-        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+        &:hover {
+          background: ${color("primary", 600)};
+          border: 1px solid ${color("primary", 600)};
+        }
+        &:focus {
+          background: ${color("primary", 600)};
+          border: 1px solid ${color("primary", 600)};
+          box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
+            0px 0px 0px 4px ${color("primary", 100)};
+        }
+        $:disabled {
+          background: ${color("primary", 200)};
+          border: 1px solid ${color("primary", 200)};
+        }
       `;
     }
 
     //Secondary
-    else if (
-      props.color === ButtonCtaColor.secondary &&
-      props.state === ButtonCtaState.default
-    ) {
+    else if (props.color === ButtonCtaColor.secondary) {
       return css`
         background: ${color("primary", 50)};
         color: ${color("primary", 700)};
         border: 1px solid ${color("primary", 50)};
         box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-      `;
-    } else if (
-      props.color === ButtonCtaColor.secondary &&
-      props.state === ButtonCtaState.hover
-    ) {
-      return css`
-        background: ${color("primary", 100)};
-        color: ${color("primary", 700)};
-        border: 1px solid ${color("primary", 100)};
-        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-      `;
-    } else if (
-      props.color === ButtonCtaColor.secondary &&
-      props.state === ButtonCtaState.focused
-    ) {
-      return css`
-        background: ${color("primary", 50)};
-        color: ${color("primary", 700)};
-        border: 1px solid ${color("primary", 50)};
-        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
-          0px 0px 0px 4px ${color("primary", 100)};
-      `;
-    } else if (
-      props.color === ButtonCtaColor.secondary &&
-      props.state === ButtonCtaState.disabled
-    ) {
-      return css`
-        background: ${color("primary", 25)};
-        color: ${color("primary", 300)};
-        border: 1px solid ${color("primary", 25)};
-        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+        &:hover {
+          background: ${color("primary", 100)};
+          border: 1px solid ${color("primary", 100)};
+        }
+        &:focus {
+          border: 1px solid ${color("primary", 50)};
+          box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
+            0px 0px 0px 4px ${color("primary", 100)};
+        }
+        &:disabled {
+          background: ${color("primary", 25)};
+          color: ${color("primary", 300)};
+          border: 1px solid ${color("primary", 25)};
+        }
       `;
     }
 
     //Gray
-    else if (
-      props.color === ButtonCtaColor.gray &&
-      props.state === ButtonCtaState.default
-    ) {
+    else if (props.color === ButtonCtaColor.gray) {
       return css`
         background: white;
         color: ${color("gray", 700)};
         border: 1px solid ${color("gray", 300)};
         box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-      `;
-    } else if (
-      props.color === ButtonCtaColor.gray &&
-      props.state === ButtonCtaState.hover
-    ) {
-      return css`
-        background: ${color("gray", 50)};
-        color: ${color("gray", 800)};
-        border: 1px solid ${color("gray", 300)};
-        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-      `;
-    } else if (
-      props.color === ButtonCtaColor.gray &&
-      props.state === ButtonCtaState.focused
-    ) {
-      return css`
-        background: white;
-        color: ${color("gray", 700)};
-        border: 1px solid ${color("gray", 300)};
-        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
-          0px 0px 0px 4px ${color("gray", 100)};
-      `;
-    } else if (
-      props.color === ButtonCtaColor.gray &&
-      props.state === ButtonCtaState.disabled
-    ) {
-      return css`
-        background: white;
-        color: ${color("gray", 300)};
-        border: 1px solid ${color("gray", 200)};
-        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+        &:hover {
+          background: ${color("gray", 50)};
+          color: ${color("gray", 800)};
+        }
+        &:focus {
+          box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
+            0px 0px 0px 4px ${color("gray", 100)};
+        }
+        &:disabled {
+          color: ${color("gray", 300)};
+          border: 1px solid ${color("gray", 200)};
+        }
       `;
     }
 
     //Empty
-    else if (
-      props.color === ButtonCtaColor.empty &&
-      props.state === ButtonCtaState.default
-    ) {
+    else if (props.color === ButtonCtaColor.empty) {
       return css`
         color: ${color("primary", 700)};
-      `;
-    } else if (
-      props.color === ButtonCtaColor.empty &&
-      props.state === ButtonCtaState.hover
-    ) {
-      return css`
-        background: ${color("primary", 50)};
-        color: ${color("primary", 700)};
-      `;
-    } else if (
-      props.color === ButtonCtaColor.empty &&
-      props.state === ButtonCtaState.focused
-    ) {
-      return css`
-        color: ${color("primary", 700)};
-      `;
-    } else if (
-      props.color === ButtonCtaColor.empty &&
-      props.state === ButtonCtaState.disabled
-    ) {
-      return css`
-        color: ${color("gray", 300)};
+        &:hover {
+          background: ${color("primary", 50)};
+        }
+        &:disabled {
+          color: ${color("gray", 300)};
+        }
       `;
     }
 
     //Empty gray
-    else if (
-      props.color === ButtonCtaColor.emptyGray &&
-      props.state === ButtonCtaState.default
-    ) {
+    else if (props.color === ButtonCtaColor.emptyGray) {
       return css`
         color: ${color("gray", 500)};
-      `;
-    } else if (
-      props.color === ButtonCtaColor.emptyGray &&
-      props.state === ButtonCtaState.hover
-    ) {
-      return css`
-        background: ${color("gray", 50)};
-        color: ${color("gray", 600)};
-      `;
-    } else if (
-      props.color === ButtonCtaColor.emptyGray &&
-      props.state === ButtonCtaState.focused
-    ) {
-      return css`
-        color: ${color("gray", 500)};
-      `;
-    } else if (
-      props.color === ButtonCtaColor.emptyGray &&
-      props.state === ButtonCtaState.disabled
-    ) {
-      return css`
-        color: ${color("gray", 300)};
+        &:hover {
+          background: ${color("gray", 50)};
+          color: ${color("gray", 600)};
+        }
+        &:disabled {
+          color: ${color("gray", 300)};
+        }
       `;
     }
 
     //Error
-    else if (
-      props.color === ButtonCtaColor.error &&
-      props.state === ButtonCtaState.default
-    ) {
+    else if (props.color === ButtonCtaColor.error) {
       return css`
         background: ${color("error", 600)};
         color: white;
         border: 1px solid ${color("error", 600)};
         box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-      `;
-    } else if (
-      props.color === ButtonCtaColor.error &&
-      props.state === ButtonCtaState.hover
-    ) {
-      return css`
-        background: ${color("error", 700)};
-        color: white;
-        border: 1px solid ${color("error", 700)};
-        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-      `;
-    } else if (
-      props.color === ButtonCtaColor.error &&
-      props.state === ButtonCtaState.focused
-    ) {
-      return css`
-        background: ${color("error", 600)};
-        color: white;
-        border: 1px solid ${color("error", 600)};
-        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
-          0px 0px 0px 4px ${color("error", 100)};
-      `;
-    } else if (
-      props.color === ButtonCtaColor.error &&
-      props.state === ButtonCtaState.disabled
-    ) {
-      return css`
-        background: ${color("error", 200)};
-        color: white;
-        border: 1px solid ${color("error", 200)};
-        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+        &:hover {
+          background: ${color("error", 700)};
+          border: 1px solid ${color("error", 700)};
+        }
+        &:focus {
+          box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
+            0px 0px 0px 4px ${color("error", 100)};
+        }
+        &:disabled {
+          background: ${color("error", 200)};
+          border: 1px solid ${color("error", 200)};
+        }
       `;
     }
   }}
@@ -339,10 +209,9 @@ export function ButtonCTA({
   children,
   size = ButtonCtaSize.md,
   color = ButtonCtaColor.primary,
-  state = ButtonCtaState.default,
 }: ButtonProps) {
   return (
-    <Container size={size} color={color} state={state}>
+    <Container size={size} color={color}>
       {children}
     </Container>
   );

@@ -1,11 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import {
-  ButtonCTA,
-  ButtonCtaSize,
-  ButtonCtaColor,
-  ButtonCtaState,
-} from "./button-cta";
+import { ButtonCTA, ButtonCtaSize, ButtonCtaColor } from "./button-cta";
 
 export default {
   title: "UI/Button",
@@ -16,9 +11,9 @@ export default {
   },
 } as ComponentMeta<typeof ButtonCTA>;
 
-const Template: ComponentStory<typeof ButtonCTA> = ({ size, color, state }) => (
+const Template: ComponentStory<typeof ButtonCTA> = ({ size, color }) => (
   <div style={{ padding: 50 }}>
-    <ButtonCTA color={color} size={size} state={state}>
+    <ButtonCTA color={color} size={size}>
       Button CTA
     </ButtonCTA>
   </div>
@@ -28,7 +23,6 @@ export const Default = Template.bind({});
 Default.args = {
   size: ButtonCtaSize.sm,
   color: ButtonCtaColor.primary,
-  state: ButtonCtaState.default,
 };
 Default.parameters = {
   viewMode: "docs",
