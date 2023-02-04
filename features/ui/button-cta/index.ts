@@ -1,1 +1,6 @@
-export { Button, ButtonSize, ButtonColor, ButtonState } from "./button";
+export {
+  ButtonCTA,
+  ButtonCtaSize,
+  ButtonCtaColor,
+  ButtonCtaState,
+} from "./button-cta";

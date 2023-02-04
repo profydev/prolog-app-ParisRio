@@ -2,14 +2,14 @@ import { color, space, textFont } from "@styles/theme";
 import React from "react";
 import styled, { css } from "styled-components";
 
-export enum ButtonSize {
+export enum ButtonCtaSize {
   sm = "sm",
   md = "md",
   lg = "lg",
   xl = "xl",
 }
 
-export enum ButtonColor {
+export enum ButtonCtaColor {
   primary = "primary",
   secondary = "secondary",
   gray = "gray",
@@ -18,7 +18,7 @@ export enum ButtonColor {
   error = "error",
 }
 
-export enum ButtonState {
+export enum ButtonCtaState {
   default = "default",
   hover = "hover",
   focused = "focused",
@@ -27,15 +27,15 @@ export enum ButtonState {
 
 type ButtonProps = {
   children: React.ReactNode;
-  size?: ButtonSize;
-  color?: ButtonColor;
-  state?: ButtonState;
+  size?: ButtonCtaSize;
+  color?: ButtonCtaColor;
+  state?: ButtonCtaState;
 };
 
 export const Container = styled.button<{
-  size: ButtonSize;
-  color: ButtonColor;
-  state: ButtonState;
+  size: ButtonCtaSize;
+  color: ButtonCtaColor;
+  state: ButtonCtaState;
 }>`
   cursor: pointer;
 
@@ -64,25 +64,25 @@ export const Container = styled.button<{
   //size
   ${(props) => {
     switch (props.size) {
-      case ButtonSize.sm:
+      case ButtonCtaSize.sm:
         return css`
           padding: 0.5rem 0.875rem;
           height: 2.25rem;
           ${textFont("sm", "medium")}
         `;
-      case ButtonSize.md:
+      case ButtonCtaSize.md:
         return css`
           padding: 0.625rem 1rem;
           height: 2.5rem;
           ${textFont("sm", "medium")}
         `;
-      case ButtonSize.lg:
+      case ButtonCtaSize.lg:
         return css`
           padding: 0.625rem 1.125rem;
           height: 2.75rem;
           ${textFont("md", "medium")}
         `;
-      case ButtonSize.xl:
+      case ButtonCtaSize.xl:
         return css`
           padding: 0.75rem 1.25rem;
           height: 3rem;
@@ -92,8 +92,8 @@ export const Container = styled.button<{
   }}
   ${(props) => {
     if (
-      props.color === ButtonColor.primary &&
-      props.state === ButtonState.default
+      props.color === ButtonCtaColor.primary &&
+      props.state === ButtonCtaState.default
     ) {
       return css`
         background: ${color("primary", 600)};
@@ -102,8 +102,8 @@ export const Container = styled.button<{
         box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
       `;
     } else if (
-      props.color === ButtonColor.primary &&
-      props.state === ButtonState.hover
+      props.color === ButtonCtaColor.primary &&
+      props.state === ButtonCtaState.hover
     ) {
       return css`
         background: ${color("primary", 600)};
@@ -112,8 +112,8 @@ export const Container = styled.button<{
         box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
       `;
     } else if (
-      props.color === ButtonColor.primary &&
-      props.state === ButtonState.focused
+      props.color === ButtonCtaColor.primary &&
+      props.state === ButtonCtaState.focused
     ) {
       return css`
         background: ${color("primary", 600)};
@@ -123,8 +123,8 @@ export const Container = styled.button<{
           0px 0px 0px 4px ${color("primary", 100)};
       `;
     } else if (
-      props.color === ButtonColor.primary &&
-      props.state === ButtonState.disabled
+      props.color === ButtonCtaColor.primary &&
+      props.state === ButtonCtaState.disabled
     ) {
       return css`
         background: ${color("primary", 200)};
@@ -136,11 +136,11 @@ export const Container = styled.button<{
   }}
 `;
 
-export function Button({
+export function ButtonCTA({
   children,
-  size = ButtonSize.md,
-  color = ButtonColor.primary,
-  state = ButtonState.default,
+  size = ButtonCtaSize.md,
+  color = ButtonCtaColor.primary,
+  state = ButtonCtaState.default,
 }: ButtonProps) {
   return (
     <Container size={size} color={color} state={state}>
