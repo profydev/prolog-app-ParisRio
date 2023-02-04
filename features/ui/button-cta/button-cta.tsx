@@ -92,8 +92,8 @@ export const Container = styled.button<{
         border: 1px solid ${color("primary", 600)};
         box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
         &:hover {
-          background: ${color("primary", 600)};
-          border: 1px solid ${color("primary", 600)};
+          background: ${color("primary", 700)};
+          border: 1px solid ${color("primary", 700)};
         }
         &:focus {
           background: ${color("primary", 600)};
@@ -120,6 +120,7 @@ export const Container = styled.button<{
           border: 1px solid ${color("primary", 100)};
         }
         &:focus {
+          background: ${color("primary", 50)};
           border: 1px solid ${color("primary", 50)};
           box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
             0px 0px 0px 4px ${color("primary", 100)};
@@ -144,6 +145,8 @@ export const Container = styled.button<{
           color: ${color("gray", 800)};
         }
         &:focus {
+          background: white;
+          color: ${color("gray", 700)};
           box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
             0px 0px 0px 4px ${color("gray", 100)};
         }
@@ -161,6 +164,10 @@ export const Container = styled.button<{
         &:hover {
           background: ${color("primary", 50)};
         }
+        :focus {
+          color: ${color("primary", 700)};
+          background: unset;
+        }
         &:disabled {
           color: ${color("gray", 300)};
         }
@@ -174,6 +181,10 @@ export const Container = styled.button<{
         &:hover {
           background: ${color("gray", 50)};
           color: ${color("gray", 600)};
+        }
+        :focus {
+          color: ${color("gray", 500)};
+          background: unset;
         }
         &:disabled {
           color: ${color("gray", 300)};
@@ -193,6 +204,8 @@ export const Container = styled.button<{
           border: 1px solid ${color("error", 700)};
         }
         &:focus {
+          background: ${color("error", 600)};
+          border: 1px solid ${color("error", 600)};
           box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
             0px 0px 0px 4px ${color("error", 100)};
         }
