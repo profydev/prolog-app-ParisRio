@@ -90,7 +90,10 @@ export const Container = styled.button<{
         `;
     }
   }}
+
+  //Color and state
   ${(props) => {
+    //Primary
     if (
       props.color === ButtonCtaColor.primary &&
       props.state === ButtonCtaState.default
@@ -130,6 +133,202 @@ export const Container = styled.button<{
         background: ${color("primary", 200)};
         color: white;
         border: 1px solid ${color("primary", 200)};
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+      `;
+    }
+
+    //Secondary
+    else if (
+      props.color === ButtonCtaColor.secondary &&
+      props.state === ButtonCtaState.default
+    ) {
+      return css`
+        background: ${color("primary", 50)};
+        color: ${color("primary", 700)};
+        border: 1px solid ${color("primary", 50)};
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+      `;
+    } else if (
+      props.color === ButtonCtaColor.secondary &&
+      props.state === ButtonCtaState.hover
+    ) {
+      return css`
+        background: ${color("primary", 100)};
+        color: ${color("primary", 700)};
+        border: 1px solid ${color("primary", 100)};
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+      `;
+    } else if (
+      props.color === ButtonCtaColor.secondary &&
+      props.state === ButtonCtaState.focused
+    ) {
+      return css`
+        background: ${color("primary", 50)};
+        color: ${color("primary", 700)};
+        border: 1px solid ${color("primary", 50)};
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
+          0px 0px 0px 4px ${color("primary", 100)};
+      `;
+    } else if (
+      props.color === ButtonCtaColor.secondary &&
+      props.state === ButtonCtaState.disabled
+    ) {
+      return css`
+        background: ${color("primary", 25)};
+        color: ${color("primary", 300)};
+        border: 1px solid ${color("primary", 25)};
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+      `;
+    }
+
+    //Gray
+    else if (
+      props.color === ButtonCtaColor.gray &&
+      props.state === ButtonCtaState.default
+    ) {
+      return css`
+        background: white;
+        color: ${color("gray", 700)};
+        border: 1px solid ${color("gray", 300)};
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+      `;
+    } else if (
+      props.color === ButtonCtaColor.gray &&
+      props.state === ButtonCtaState.hover
+    ) {
+      return css`
+        background: ${color("gray", 50)};
+        color: ${color("gray", 800)};
+        border: 1px solid ${color("gray", 300)};
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+      `;
+    } else if (
+      props.color === ButtonCtaColor.gray &&
+      props.state === ButtonCtaState.focused
+    ) {
+      return css`
+        background: white;
+        color: ${color("gray", 700)};
+        border: 1px solid ${color("gray", 300)};
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
+          0px 0px 0px 4px ${color("gray", 100)};
+      `;
+    } else if (
+      props.color === ButtonCtaColor.gray &&
+      props.state === ButtonCtaState.disabled
+    ) {
+      return css`
+        background: white;
+        color: ${color("gray", 300)};
+        border: 1px solid ${color("gray", 200)};
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+      `;
+    }
+
+    //Empty
+    else if (
+      props.color === ButtonCtaColor.empty &&
+      props.state === ButtonCtaState.default
+    ) {
+      return css`
+        color: ${color("primary", 700)};
+      `;
+    } else if (
+      props.color === ButtonCtaColor.empty &&
+      props.state === ButtonCtaState.hover
+    ) {
+      return css`
+        background: ${color("primary", 50)};
+        color: ${color("primary", 700)};
+      `;
+    } else if (
+      props.color === ButtonCtaColor.empty &&
+      props.state === ButtonCtaState.focused
+    ) {
+      return css`
+        color: ${color("primary", 700)};
+      `;
+    } else if (
+      props.color === ButtonCtaColor.empty &&
+      props.state === ButtonCtaState.disabled
+    ) {
+      return css`
+        color: ${color("gray", 300)};
+      `;
+    }
+
+    //Empty gray
+    else if (
+      props.color === ButtonCtaColor.emptyGray &&
+      props.state === ButtonCtaState.default
+    ) {
+      return css`
+        color: ${color("gray", 500)};
+      `;
+    } else if (
+      props.color === ButtonCtaColor.emptyGray &&
+      props.state === ButtonCtaState.hover
+    ) {
+      return css`
+        background: ${color("gray", 50)};
+        color: ${color("gray", 600)};
+      `;
+    } else if (
+      props.color === ButtonCtaColor.emptyGray &&
+      props.state === ButtonCtaState.focused
+    ) {
+      return css`
+        color: ${color("gray", 500)};
+      `;
+    } else if (
+      props.color === ButtonCtaColor.emptyGray &&
+      props.state === ButtonCtaState.disabled
+    ) {
+      return css`
+        color: ${color("gray", 300)};
+      `;
+    }
+
+    //Error
+    else if (
+      props.color === ButtonCtaColor.error &&
+      props.state === ButtonCtaState.default
+    ) {
+      return css`
+        background: ${color("error", 600)};
+        color: white;
+        border: 1px solid ${color("error", 600)};
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+      `;
+    } else if (
+      props.color === ButtonCtaColor.error &&
+      props.state === ButtonCtaState.hover
+    ) {
+      return css`
+        background: ${color("error", 700)};
+        color: white;
+        border: 1px solid ${color("error", 700)};
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+      `;
+    } else if (
+      props.color === ButtonCtaColor.error &&
+      props.state === ButtonCtaState.focused
+    ) {
+      return css`
+        background: ${color("error", 600)};
+        color: white;
+        border: 1px solid ${color("error", 600)};
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
+          0px 0px 0px 4px ${color("error", 100)};
+      `;
+    } else if (
+      props.color === ButtonCtaColor.error &&
+      props.state === ButtonCtaState.disabled
+    ) {
+      return css`
+        background: ${color("error", 200)};
+        color: white;
+        border: 1px solid ${color("error", 200)};
         box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
       `;
     }
