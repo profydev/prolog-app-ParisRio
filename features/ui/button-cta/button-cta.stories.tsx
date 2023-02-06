@@ -1,6 +1,11 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ButtonCTA, ButtonCtaSize, ButtonCtaColor } from "./button-cta";
+import {
+  ButtonCTA,
+  ButtonCtaSize,
+  ButtonCtaColor,
+  ButtonCtaIconPosition,
+} from "./button-cta";
 
 export default {
   title: "UI/Button",
@@ -10,11 +15,21 @@ export default {
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof ButtonCTA>;
-
-const Template: ComponentStory<typeof ButtonCTA> = ({ size, color }) => (
+//iconSrc={iconSrc}
+const Template: ComponentStory<typeof ButtonCTA> = ({
+  size,
+  color,
+  iconSrc,
+  iconPosition,
+}) => (
   <div style={{ padding: 50 }}>
-    <ButtonCTA color={color} size={size}>
-      Button CTA
+    <ButtonCTA
+      color={color}
+      size={size}
+      iconSrc={iconSrc}
+      iconPosition={iconPosition}
+    >
+      Test
     </ButtonCTA>
   </div>
 );
@@ -23,6 +38,8 @@ export const Default = Template.bind({});
 Default.args = {
   size: ButtonCtaSize.sm,
   color: ButtonCtaColor.primary,
+  iconSrc: "/icons/projects.svg",
+  iconPosition: ButtonCtaIconPosition.leading,
 };
 Default.parameters = {
   viewMode: "docs",

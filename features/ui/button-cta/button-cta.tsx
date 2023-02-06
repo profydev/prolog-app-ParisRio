@@ -18,10 +18,18 @@ export enum ButtonCtaColor {
   error = "error",
 }
 
+export enum ButtonCtaIconPosition {
+  leading = "leading",
+  trailing = "trailing",
+  iconOnly = "iconOnly",
+}
+
 type ButtonProps = {
   children: React.ReactNode;
   size?: ButtonCtaSize;
   color?: ButtonCtaColor;
+  iconSrc?: string;
+  iconPosition?: ButtonCtaIconPosition;
 };
 
 export const Container = styled.button<{
@@ -218,14 +226,48 @@ export const Container = styled.button<{
   }}
 `;
 
+//iconSrc: "/icons/projects.svg"
+export const Icon = styled.img<{
+  iconPosition: ButtonCtaIconPosition;
+}>`
+  width: ${space(4)};
+  ${(props) => {
+    if (props.iconPosition === ButtonCtaIconPosition.leading) {
+      return css`
+        padding-right: ${space(2)};
+      `;
+    } else if (props.iconPosition === ButtonCtaIconPosition.trailing) {
+      return css`
+        padding-left: ${space(2)};
+        order: 1;
+      `;
+    }
+  }}
+`;
+
 export function ButtonCTA({
   children,
   size = ButtonCtaSize.md,
   color = ButtonCtaColor.primary,
+  iconSrc,
+  iconPosition = ButtonCtaIconPosition.leading,
 }: ButtonProps) {
+  //First case is for Button CTA with only icon and no Text.
+  //Then Case for Button CTA with leading or trailing icon + Text
+  //Case for Button CTA with only text (no icon src provided)
+
   return (
     <Container size={size} color={color}>
-      {children}
+      {iconSrc && iconPosition === ButtonCtaIconPosition.iconOnly ? (
+        <Icon src={iconSrc} alt={`icon`} iconPosition={iconPosition} />
+      ) : (
+        <>
+          {iconSrc && (
+            <Icon src={iconSrc} alt={`icon`} iconPosition={iconPosition} />
+          )}
+          {children}
+        </>
+      )}
     </Container>
   );
 }
