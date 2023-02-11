@@ -10,7 +10,7 @@
     "prettier": "prettier --check .",
     "cypress": "cypress open",
     "test": "jest --watch",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6007",
     "build-storybook": "build-storybook",
     "prepare": "husky install"
   },
