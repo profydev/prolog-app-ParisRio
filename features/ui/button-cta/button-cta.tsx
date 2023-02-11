@@ -25,11 +25,12 @@ export enum ButtonCtaIconPosition {
 }
 
 type ButtonProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   size?: ButtonCtaSize;
   color?: ButtonCtaColor;
   iconSrc?: string;
   iconPosition?: ButtonCtaIconPosition;
+  disabled?: boolean;
 };
 
 export const Container = styled.button<{
@@ -54,7 +55,6 @@ export const Container = styled.button<{
   }
 
   //comon style
-  width: fit-content;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -109,7 +109,7 @@ export const Container = styled.button<{
           box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
             0px 0px 0px 4px ${color("primary", 100)};
         }
-        $:disabled {
+        &:disabled {
           background: ${color("primary", 200)};
           border: 1px solid ${color("primary", 200)};
         }
@@ -226,7 +226,6 @@ export const Container = styled.button<{
   }}
 `;
 
-//iconSrc: "/icons/projects.svg"
 export const Icon = styled.img<{
   iconPosition: ButtonCtaIconPosition;
 }>`
@@ -251,13 +250,14 @@ export function ButtonCTA({
   color = ButtonCtaColor.primary,
   iconSrc,
   iconPosition = ButtonCtaIconPosition.leading,
+  disabled = false,
 }: ButtonProps) {
   //First case is for Button CTA with only icon and no Text.
   //Then Case for Button CTA with leading or trailing icon + Text
   //Case for Button CTA with only text (no icon src provided)
 
   return (
-    <Container size={size} color={color}>
+    <Container as="button" size={size} color={color} disabled={disabled}>
       {iconSrc && iconPosition === ButtonCtaIconPosition.iconOnly ? (
         <Icon src={iconSrc} alt={`icon`} iconPosition={iconPosition} />
       ) : (

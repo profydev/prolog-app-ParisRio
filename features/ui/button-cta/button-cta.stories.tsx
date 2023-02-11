@@ -15,12 +15,13 @@ export default {
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof ButtonCTA>;
-//iconSrc={iconSrc}
+
 const Template: ComponentStory<typeof ButtonCTA> = ({
   size,
   color,
   iconSrc,
   iconPosition,
+  disabled,
 }) => (
   <div style={{ padding: 50 }}>
     <ButtonCTA
@@ -28,6 +29,7 @@ const Template: ComponentStory<typeof ButtonCTA> = ({
       size={size}
       iconSrc={iconSrc}
       iconPosition={iconPosition}
+      disabled={disabled}
     >
       Test
     </ButtonCTA>
@@ -40,6 +42,7 @@ Default.args = {
   color: ButtonCtaColor.primary,
   iconSrc: "/icons/projects.svg",
   iconPosition: ButtonCtaIconPosition.leading,
+  disabled: false,
 };
 Default.parameters = {
   viewMode: "docs",
