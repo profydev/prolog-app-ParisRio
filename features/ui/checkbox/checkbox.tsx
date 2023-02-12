@@ -1,5 +1,4 @@
-import { textFont } from "@styles/theme";
-import { InputHTMLAttributes } from "react";
+import { color, space, textFont } from "@styles/theme";
 import styled, { css } from "styled-components";
 
 export enum CheckboxSize {
@@ -31,33 +30,52 @@ const Container = styled.div`
   //comon style
   box-sizing: border-box;
   display: flex;
+  align-items: center;
 `;
+
 const Input = styled.input<{ CheckBoxSize: CheckboxSize }>`
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  border: 1px solid ${color("gray", 300)};
+  background-color: white;
   ${(props) => {
     switch (props.CheckBoxSize) {
       case CheckboxSize.sm:
         return css`
-          ${textFont("sm", "medium")}
+          width: ${space(4)};
+          height: ${space(4)};
+          border-radius: ${space(1)};
         `;
       case CheckboxSize.md:
         return css`
-          ${textFont("md", "medium")}
+          width: ${space(5)};
+          height: ${space(5)};
+          border-radius: 0.375rem;
         `;
     }
   }}
 `;
 
 const Label = styled.label<{ CheckBoxSize: CheckboxSize }>`
+  color: ${color("gray", 700)};
+  box-sizing: border-box;
   //size
   ${(props) => {
     switch (props.CheckBoxSize) {
       case CheckboxSize.sm:
         return css`
-          ${textFont("sm", "medium")}
+          padding-left: ${space(2)};
+          padding-top: 1px;
+          height: 20px;
+          ${textFont("sm", "medium")};
         `;
       case CheckboxSize.md:
         return css`
-          ${textFont("md", "medium")}
+          padding-left: ${space(3)};
+          padding-top: 1px;
+          height: 24px;
+          ${textFont("md", "medium")};
         `;
     }
   }}
