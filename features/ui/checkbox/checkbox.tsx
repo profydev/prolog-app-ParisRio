@@ -54,7 +54,6 @@ const Input = styled.input<{ CheckBoxSize: CheckboxSize }>`
   &:disabled {
     border: 1px solid ${color("gray", 200)};
     background-color: ${color("gray", 100)};
-    stroke: ${color("gray", 200)};
   }
 
   ${(props) => {
@@ -75,16 +74,14 @@ const Input = styled.input<{ CheckBoxSize: CheckboxSize }>`
             background-color: ${color("primary", 50)};
           }
           &:checked:disabled {
-            background-image: url("/icons/checkbox-checked-sm.svg");
+            background-image: url("/icons/checkbox-checked-sm-disabled.svg");
             border: 1px solid ${color("gray", 200)};
             background-color: ${color("gray", 100)};
-            stroke: ${color("gray", 200)};
           }
           &:indeterminate:disabled {
-            background-image: url("/icons/checkbox-indeterminated-sm.svg");
+            background-image: url("/icons/checkbox-indeterminated-sm-disabled.svg");
             border: 1px solid ${color("gray", 200)};
             background-color: ${color("gray", 100)};
-            stroke: ${color("gray", 200)};
           }
         `;
       case CheckboxSize.md:
@@ -103,16 +100,14 @@ const Input = styled.input<{ CheckBoxSize: CheckboxSize }>`
             background-color: ${color("primary", 50)};
           }
           &:checked:disabled {
-            background-image: url("/icons/checkbox-checked.svg");
+            background-image: url("/icons/checkbox-checked-disabled.svg");
             border: 1px solid ${color("gray", 200)};
             background-color: ${color("gray", 100)};
-            stroke: ${color("gray", 200)};
           }
           &:indeterminate:disabled {
-            background-image: url("/icons/checkbox-indeterminated.svg");
+            background-image: url("/icons/checkbox-indeterminated-disabled.svg");
             border: 1px solid ${color("gray", 200)};
             background-color: ${color("gray", 100)};
-            stroke: ${color("gray", 200)};
           }
         `;
     }
@@ -157,7 +152,7 @@ export function Checkbox({
 }: CheckboxProps) {
   return (
     <Container>
-      <Input CheckBoxSize={size} type="checkbox" disabled={disabled} checked />
+      <Input CheckBoxSize={size} type="checkbox" disabled={disabled} />
       <Label CheckBoxSize={size} disabled={disabled}>
         {children}
       </Label>
