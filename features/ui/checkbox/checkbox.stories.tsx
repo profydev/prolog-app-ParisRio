@@ -11,9 +11,19 @@ export default {
   },
 } as ComponentMeta<typeof Checkbox>;
 
-const Template: ComponentStory<typeof Checkbox> = ({ size, disabled }) => (
+const Template: ComponentStory<typeof Checkbox> = ({
+  checked,
+  checkboxSize,
+  disabled,
+  indeterminate,
+}) => (
   <div style={{ padding: 50 }}>
-    <Checkbox size={size} disabled={disabled}>
+    <Checkbox
+      checked={checked}
+      checkboxSize={checkboxSize}
+      disabled={disabled}
+      indeterminate={indeterminate}
+    >
       Label
     </Checkbox>
   </div>
@@ -21,8 +31,10 @@ const Template: ComponentStory<typeof Checkbox> = ({ size, disabled }) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  size: CheckboxSize.md,
+  checkboxSize: CheckboxSize.md,
+  checked: false,
   disabled: false,
+  indeterminate: false,
 };
 Default.parameters = {
   viewMode: "docs",

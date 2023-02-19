@@ -1,4 +1,5 @@
 import { color, space, textFont } from "@styles/theme";
+import { InputHTMLAttributes, useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 
 export enum CheckboxSize {
@@ -6,10 +7,19 @@ export enum CheckboxSize {
   md = "md",
 }
 
-type CheckboxProps = {
+export enum CheckboxState {
+  checked = "checked",
+  unchecked = "unchecked",
+  indeterminate = "indeterminate",
+}
+//InputHTMLAttributes<HTMLInputElement> &
+//CheckBoxSize in order not to conflict with checkbox size attribute.
+type CheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
   children: React.ReactNode;
-  size?: CheckboxSize;
-  disabled: boolean;
+  checkboxSize?: CheckboxSize;
+  checked?: boolean;
+  disabled?: boolean;
+  indeterminate?: boolean;
 };
 
 const Container = styled.div`
@@ -34,7 +44,10 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Input = styled.input<{ CheckBoxSize: CheckboxSize }>`
+const Input = styled.input<{
+  checkboxSize: CheckboxSize;
+  indeterminate: boolean;
+}>`
   -moz-appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
@@ -57,7 +70,7 @@ const Input = styled.input<{ CheckBoxSize: CheckboxSize }>`
   }
 
   ${(props) => {
-    switch (props.CheckBoxSize) {
+    switch (props.checkboxSize) {
       case CheckboxSize.sm:
         return css`
           width: ${space(4)};
@@ -114,12 +127,12 @@ const Input = styled.input<{ CheckBoxSize: CheckboxSize }>`
   }}
 `;
 
-const Label = styled.label<{ CheckBoxSize: CheckboxSize; disabled: boolean }>`
+const Label = styled.label<{ checkboxSize: CheckboxSize; disabled: boolean }>`
   color: ${color("gray", 700)};
   box-sizing: border-box;
   //size
   ${(props) => {
-    switch (props.CheckBoxSize) {
+    switch (props.checkboxSize) {
       case CheckboxSize.sm:
         return css`
           padding-left: ${space(2)};
@@ -147,13 +160,36 @@ const Label = styled.label<{ CheckBoxSize: CheckboxSize; disabled: boolean }>`
 
 export function Checkbox({
   children,
-  size = CheckboxSize.md,
+  checkboxSize = CheckboxSize.md,
+  checked = false,
   disabled = false,
+  indeterminate = false,
 }: CheckboxProps) {
+  const [checkboxStatus, setCheckboxStatus] = useState(checked);
+  const checkboxRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (checkboxRef.current) {
+      checkboxRef.current.indeterminate = indeterminate;
+    }
+  }, [checkboxRef, indeterminate]);
+
+  function handleChange() {
+    setCheckboxStatus((previous) => !previous);
+  }
+
   return (
     <Container>
-      <Input CheckBoxSize={size} type="checkbox" disabled={disabled} />
-      <Label CheckBoxSize={size} disabled={disabled}>
+      <Input
+        type="checkbox"
+        ref={checkboxRef}
+        checkboxSize={checkboxSize}
+        checked={checkboxStatus}
+        onChange={handleChange}
+        disabled={disabled}
+        indeterminate={indeterminate}
+      />
+      <Label checkboxSize={checkboxSize} disabled={disabled}>
         {children}
       </Label>
     </Container>
