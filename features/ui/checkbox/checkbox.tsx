@@ -1,5 +1,5 @@
 import { color, space, textFont } from "@styles/theme";
-import { InputHTMLAttributes, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 
 export enum CheckboxSize {
@@ -7,14 +7,8 @@ export enum CheckboxSize {
   md = "md",
 }
 
-export enum CheckboxState {
-  checked = "checked",
-  unchecked = "unchecked",
-  indeterminate = "indeterminate",
-}
-//InputHTMLAttributes<HTMLInputElement> &
-//CheckBoxSize in order not to conflict with checkbox size attribute.
-type CheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
+//CheckBoxSize named is used in order not to conflict with <inpute> size attribute.
+type CheckboxProps = {
   children: React.ReactNode;
   checkboxSize?: CheckboxSize;
   checked?: boolean;
@@ -166,6 +160,9 @@ export function Checkbox({
   indeterminate = false,
 }: CheckboxProps) {
   const [checkboxStatus, setCheckboxStatus] = useState(checked);
+
+  //Indeterminate can only be accessed through the DOM element (HTMLInputElement) of the checkbox,
+  //UseRef is used for this purpose.
   const checkboxRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
