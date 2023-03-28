@@ -13,7 +13,11 @@ export default {
 
 const Template: ComponentStory<typeof Select> = () => (
   <div style={{ padding: 50 }}>
-    <Select />
+    <Select
+      options={["Olivia Rhye", "Lena Stue", "John"]}
+      label="Alerts"
+      hint="hint"
+    />
   </div>
 );
 
