@@ -1,8 +1,16 @@
 import { textFont, color } from "@styles/theme";
+import Select from "react-select";
 import styled from "styled-components";
+//nvm use default 16.14.2
+
+type SelectOption = {
+  value: string;
+  label: string;
+};
 
 type SelectProps = {
-  options: Array<string>;
+  placeholder?: string;
+  options: Array<SelectOption>;
   label?: string;
   hint?: string;
   error?: string;
@@ -47,7 +55,8 @@ const Hint = styled.span`
   color: ${color("gray", 500)};
 `;
 
-export function Select({
+export function SelectUI({
+  placeholder,
   options,
   label,
   hint,
@@ -58,11 +67,11 @@ export function Select({
   return (
     <Container>
       <Label>{label}</Label>
-      <SelectInput>
-        {options.map((option, index) => (
-          <Option key={index}>{option}</Option>
-        ))}
-      </SelectInput>
+      <Select
+        options={options}
+        placeholder={placeholder}
+        isDisabled={disabled}
+      />
       <Hint>{hint}</Hint>
     </Container>
   );

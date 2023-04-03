@@ -1,22 +1,27 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Select } from "./select";
+import { SelectUI } from "./selectUI";
 
 export default {
   title: "UI/Select",
-  component: Select,
+  component: SelectUI,
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen",
   },
-} as ComponentMeta<typeof Select>;
+} as ComponentMeta<typeof SelectUI>;
 
-const Template: ComponentStory<typeof Select> = () => (
+const Template: ComponentStory<typeof SelectUI> = () => (
   <div style={{ padding: 50 }}>
-    <Select
-      options={["Olivia Rhye", "Lena Stue", "John"]}
+    <SelectUI
+      options={[
+        { value: "Olivia Rhye", label: "Olivia Rhye" },
+        { value: "Lena Stue", label: "Lena Stue" },
+        { value: "John", label: "John" },
+      ]}
       label="Alerts"
       hint="hint"
+      placeholder="Select team member"
     />
   </div>
 );
