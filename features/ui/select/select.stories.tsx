@@ -12,7 +12,14 @@ export default {
 } as ComponentMeta<typeof SelectUI>;
 
 const Template: ComponentStory<typeof SelectUI> = () => (
-  <div style={{ padding: 50 }}>
+  <div
+    style={{
+      paddingTop: 50,
+      paddingRight: 50,
+      paddingLeft: 50,
+      paddingBottom: 200,
+    }}
+  >
     <SelectUI
       options={[
         { value: "Olivia Rhye", label: "Olivia Rhye" },
