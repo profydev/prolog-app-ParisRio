@@ -1,9 +1,9 @@
 import { textFont, color, theme } from "@styles/theme";
-import { reduce } from "lodash";
+import Image from "next/image";
 import Select, {
   StylesConfig,
-  CSSObjectWithLabel,
-  GroupBase,
+  components,
+  DropdownIndicatorProps,
 } from "react-select";
 import styled from "styled-components";
 //nvm use default 16.14.2
@@ -65,6 +65,8 @@ const Hint = styled.span`
 const customStyles: StylesConfig = {
   control: (provided, state) => ({
     ...provided,
+    width: "320px",
+    height: "44px",
     background: "white",
     borderWidth: "1px",
     borderStyle: "solid",
@@ -73,6 +75,31 @@ const customStyles: StylesConfig = {
     padding: "0.625rem 0.875rem",
     boxShadow: "0px 1px 2px rgba(16, 24, 40, 0.05)",
   }),
+  valueContainer: (provided, state) => ({
+    ...provided,
+    padding: "0 0",
+  }),
+  placeholder: (provided, state) => ({
+    ...provided,
+    color: `${color("gray", 500)({ theme })}`,
+    margin: "0 0",
+  }),
+  indicatorSeparator: (provided, state) => ({
+    ...provided,
+    display: "none",
+  }),
+  dropdownIndicator: (provided, state) => ({
+    ...provided,
+    padding: "0 0",
+  }),
+};
+
+const DropdownIndicator = (props: DropdownIndicatorProps) => {
+  return (
+    <components.DropdownIndicator {...props}>
+      <Image src="/icons/select-selected.svg" alt="select-selected-icon" />
+    </components.DropdownIndicator>
+  );
 };
 
 export function SelectUI({
@@ -97,3 +124,4 @@ export function SelectUI({
     </Container>
   );
 }
+//        components={{ DropdownIndicator }}

@@ -26,8 +26,8 @@ const Template: ComponentStory<typeof SelectUI> = () => (
         { value: "Lena Stue", label: "Lena Stue" },
         { value: "John", label: "John" },
       ]}
-      label="Alerts"
-      hint="hint"
+      label="Team member"
+      hint="This is a hint text to help user."
       placeholder="Select team member"
     />
   </div>
