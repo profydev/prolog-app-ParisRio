@@ -1,5 +1,5 @@
 import { textFont, color, theme } from "@styles/theme";
-import Image from "next/image";
+
 import Select, {
   StylesConfig,
   components,
@@ -67,13 +67,28 @@ const customStyles: StylesConfig = {
     ...provided,
     width: "320px",
     height: "44px",
-    background: "white",
+    backgroundColor: state.isDisabled
+      ? `${color("gray", 50)({ theme })}`
+      : "white",
     borderWidth: "1px",
     borderStyle: "solid",
-    borderColor: `${color("gray", 300)({ theme })}`,
+    borderColor: state.isFocused
+      ? `${color("primary", 300)({ theme })}`
+      : `${color("gray", 300)({ theme })}`,
     borderRadius: "0.5rem",
+    margin: "0.375rem 0",
     padding: "0.625rem 0.875rem",
-    boxShadow: "0px 1px 2px rgba(16, 24, 40, 0.05)",
+    boxShadow: state.isFocused
+      ? "0px 1px 2px rgba(16, 24, 40, 0.05), 0px 0px 0px 4px #F4EBFF"
+      : "0px 1px 2px rgba(16, 24, 40, 0.05)",
+    color: state.isDisabled
+      ? `${color("primary", 500)({ theme })}`
+      : `${color("gray", 900)({ theme })}`,
+    "&:hover": {
+      borderColor: state.isFocused
+        ? `${color("primary", 300)({ theme })}`
+        : `${color("gray", 300)({ theme })}`,
+    },
   }),
   valueContainer: (provided, state) => ({
     ...provided,
@@ -97,7 +112,7 @@ const customStyles: StylesConfig = {
 const DropdownIndicator = (props: DropdownIndicatorProps) => {
   return (
     <components.DropdownIndicator {...props}>
-      <Image src="/icons/select-selected.svg" alt="select-selected-icon" />
+      <img src="/icons/select-open.svg" alt="select-selected-icon" />
     </components.DropdownIndicator>
   );
 };
@@ -119,9 +134,9 @@ export function SelectUI({
         placeholder={placeholder}
         isDisabled={disabled}
         styles={customStyles}
+        components={{ DropdownIndicator }}
       />
       <Hint>{hint}</Hint>
     </Container>
   );
 }
-//        components={{ DropdownIndicator }}

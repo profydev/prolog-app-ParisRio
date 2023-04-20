@@ -11,7 +11,13 @@ export default {
   },
 } as ComponentMeta<typeof SelectUI>;
 
-const Template: ComponentStory<typeof SelectUI> = () => (
+const Template: ComponentStory<typeof SelectUI> = ({
+  placeholder,
+  label,
+  hint,
+  error,
+  disabled,
+}) => (
   <div
     style={{
       paddingTop: 50,
@@ -26,15 +32,23 @@ const Template: ComponentStory<typeof SelectUI> = () => (
         { value: "Lena Stue", label: "Lena Stue" },
         { value: "John", label: "John" },
       ]}
-      label="Team member"
-      hint="This is a hint text to help user."
-      placeholder="Select team member"
+      label={label}
+      hint={hint}
+      error={error}
+      placeholder={placeholder}
+      disabled={disabled}
     />
   </div>
 );
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  disabled: false,
+  placeholder: "Select team member",
+  label: "Team member",
+  hint: "This is a hint text to help user.",
+  error: "This is a error message.",
+};
 Default.parameters = {
   viewMode: "docs",
 };
