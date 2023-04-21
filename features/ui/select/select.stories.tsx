@@ -16,6 +16,7 @@ const Template: ComponentStory<typeof SelectUI> = ({
   label,
   hint,
   error,
+  errorMessage,
   disabled,
 }) => (
   <div
@@ -35,6 +36,7 @@ const Template: ComponentStory<typeof SelectUI> = ({
       label={label}
       hint={hint}
       error={error}
+      errorMessage={errorMessage}
       placeholder={placeholder}
       disabled={disabled}
     />
@@ -47,7 +49,8 @@ Default.args = {
   placeholder: "Select team member",
   label: "Team member",
   hint: "This is a hint text to help user.",
-  error: "This is a error message.",
+  error: false,
+  errorMessage: "This is a error message.",
 };
 Default.parameters = {
   viewMode: "docs",
