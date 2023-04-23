@@ -1,12 +1,18 @@
 import { textFont, color, theme } from "@styles/theme";
+import { log } from "console";
+import { useState } from "react";
 import Select, {
   StylesConfig,
   components,
-  DropdownIndicatorProps,
+  DropdownIndicatorProps as DefaultDropdownIndicatorProps,
 } from "react-select";
 import styled, { css } from "styled-components";
 
 //nvm use default 16.14.2
+
+interface DropdownIndicatorProps extends DefaultDropdownIndicatorProps {
+  isMenuOpen: boolean;
+}
 
 type SelectOption = {
   value: string;
@@ -108,9 +114,14 @@ const customStyles = (error: boolean | undefined): StylesConfig => ({
 });
 
 const DropdownIndicator = (props: DropdownIndicatorProps) => {
+  const { isMenuOpen } = props;
   return (
     <components.DropdownIndicator {...props}>
-      <img src="/icons/select-open.svg" alt="select-selected-icon" />
+      {isMenuOpen ? (
+        <img src="/icons/select-close.svg" alt="select-close-icon" />
+      ) : (
+        <img src="/icons/select-open.svg" alt="select-open-icon" />
+      )}
     </components.DropdownIndicator>
   );
 };
@@ -125,6 +136,8 @@ export function SelectUI({
   iconSrc,
   disabled,
 }: SelectUIProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <Container>
       <Label>{label}</Label>
@@ -133,7 +146,13 @@ export function SelectUI({
         placeholder={placeholder}
         isDisabled={disabled}
         styles={customStyles(error)}
-        components={{ DropdownIndicator }}
+        onMenuOpen={() => setIsMenuOpen(true)}
+        onMenuClose={() => setIsMenuOpen(false)}
+        components={{
+          DropdownIndicator: (props) => (
+            <DropdownIndicator {...props} isMenuOpen={isMenuOpen} />
+          ),
+        }}
       />
       <Hint error={error}>{error ? errorMessage : hint}</Hint>
     </Container>
