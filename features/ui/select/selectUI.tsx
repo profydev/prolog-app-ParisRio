@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { textFont, color, theme } from "@styles/theme";
 import { log } from "console";
 import { useState } from "react";
@@ -5,6 +6,7 @@ import Select, {
   StylesConfig,
   components,
   DropdownIndicatorProps as DefaultDropdownIndicatorProps,
+  OptionProps,
 } from "react-select";
 import styled, { css } from "styled-components";
 
@@ -111,6 +113,16 @@ const customStyles = (error: boolean | undefined): StylesConfig => ({
     ...provided,
     padding: "0 0",
   }),
+  option: (provided, state) => ({
+    ...provided,
+    display: "flex",
+    padding: "0.5rem 1rem 0.5rem 0.875rem",
+    justifyContent: "space-between",
+    color: `${color("gray", 900)({ theme })} `,
+    backgroundColor: state.isFocused
+      ? `${color("primary", 25)({ theme })} `
+      : "white",
+  }),
 });
 
 const DropdownIndicator = (props: DropdownIndicatorProps) => {
@@ -123,6 +135,19 @@ const DropdownIndicator = (props: DropdownIndicatorProps) => {
         <img src="/icons/select-open.svg" alt="select-open-icon" />
       )}
     </components.DropdownIndicator>
+  );
+};
+
+const Option = (props: OptionProps) => {
+  const { isSelected, children } = props;
+
+  return (
+    <components.Option {...props}>
+      {children}
+      {isSelected && (
+        <img src="/icons/select-selected.svg" alt="select-selected-icon" />
+      )}
+    </components.Option>
   );
 };
 
@@ -142,6 +167,7 @@ export function SelectUI({
     <Container>
       <Label>{label}</Label>
       <Select
+        // menuIsOpen={true}
         options={options}
         placeholder={placeholder}
         isDisabled={disabled}
@@ -152,6 +178,7 @@ export function SelectUI({
           DropdownIndicator: (props) => (
             <DropdownIndicator {...props} isMenuOpen={isMenuOpen} />
           ),
+          Option,
         }}
       />
       <Hint error={error}>{error ? errorMessage : hint}</Hint>
