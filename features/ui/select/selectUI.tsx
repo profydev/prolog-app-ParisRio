@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { textFont, color, theme } from "@styles/theme";
-import { log } from "console";
 import { useState } from "react";
 import Select, {
   StylesConfig,
   components,
   DropdownIndicatorProps as DefaultDropdownIndicatorProps,
-  OptionProps,
+  OptionProps as DefaultOptionProps,
+  PlaceholderProps as DefaultPlaceholderProps,
 } from "react-select";
 import styled, { css } from "styled-components";
 
@@ -14,6 +14,14 @@ import styled, { css } from "styled-components";
 
 interface DropdownIndicatorProps extends DefaultDropdownIndicatorProps {
   isMenuOpen: boolean;
+}
+
+interface OptionProps extends DefaultOptionProps {
+  iconSrc: string | undefined;
+}
+
+interface PlaceholderProps extends DefaultPlaceholderProps {
+  iconSrc: string | undefined;
 }
 
 type SelectOption = {
@@ -96,20 +104,22 @@ const customStyles = (error: boolean | undefined): StylesConfig => ({
         : `${color("gray", 300)({ theme })} `,
     },
   }),
-  valueContainer: (provided, state) => ({
+  valueContainer: (provided) => ({
     ...provided,
     padding: "0 0",
   }),
-  placeholder: (provided, state) => ({
+  placeholder: (provided) => ({
     ...provided,
+    display: "flex",
+    alignItems: "center",
     color: `${color("gray", 500)({ theme })} `,
     margin: "0 0",
   }),
-  indicatorSeparator: (provided, state) => ({
+  indicatorSeparator: (provided) => ({
     ...provided,
     display: "none",
   }),
-  dropdownIndicator: (provided, state) => ({
+  dropdownIndicator: (provided) => ({
     ...provided,
     padding: "0 0",
   }),
@@ -138,16 +148,45 @@ const DropdownIndicator = (props: DropdownIndicatorProps) => {
   );
 };
 
+const stylesOptionContainer = {
+  display: "flex",
+  alignItems: "center",
+};
+
+const stylesOptionIcon = {
+  paddingRight: "0.75rem",
+};
+
 const Option = (props: OptionProps) => {
-  const { isSelected, children } = props;
+  const { isSelected, children, iconSrc } = props;
 
   return (
     <components.Option {...props}>
-      {children}
+      <div style={stylesOptionContainer}>
+        {iconSrc && (
+          <img
+            style={stylesOptionIcon}
+            src={iconSrc}
+            alt="select-option-icon"
+          />
+        )}
+        {children}
+      </div>
       {isSelected && (
         <img src="/icons/select-selected.svg" alt="select-selected-icon" />
       )}
     </components.Option>
+  );
+};
+const Placeholder = (props: PlaceholderProps) => {
+  const { children, iconSrc } = props;
+  return (
+    <components.Placeholder {...props}>
+      {iconSrc && (
+        <img style={stylesOptionIcon} src={iconSrc} alt="select-option-icon" />
+      )}
+      {children}
+    </components.Placeholder>
   );
 };
 
@@ -167,7 +206,7 @@ export function SelectUI({
     <Container>
       <Label>{label}</Label>
       <Select
-        // menuIsOpen={true}
+        //menuIsOpen={true}
         options={options}
         placeholder={placeholder}
         isDisabled={disabled}
@@ -178,7 +217,8 @@ export function SelectUI({
           DropdownIndicator: (props) => (
             <DropdownIndicator {...props} isMenuOpen={isMenuOpen} />
           ),
-          Option,
+          Option: (props) => <Option {...props} iconSrc={iconSrc} />,
+          Placeholder: (props) => <Placeholder {...props} iconSrc={iconSrc} />,
         }}
       />
       <Hint error={error}>{error ? errorMessage : hint}</Hint>

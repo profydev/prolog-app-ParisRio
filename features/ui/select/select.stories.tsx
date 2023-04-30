@@ -17,6 +17,7 @@ const Template: ComponentStory<typeof SelectUI> = ({
   hint,
   error,
   errorMessage,
+  iconSrc,
   disabled,
 }) => (
   <div
@@ -39,6 +40,7 @@ const Template: ComponentStory<typeof SelectUI> = ({
       errorMessage={errorMessage}
       placeholder={placeholder}
       disabled={disabled}
+      iconSrc={iconSrc}
     />
   </div>
 );
@@ -51,6 +53,7 @@ Default.args = {
   hint: "This is a hint text to help user.",
   error: false,
   errorMessage: "This is a error message.",
+  iconSrc: "/icons/select-icon.svg",
 };
 Default.parameters = {
   viewMode: "docs",
