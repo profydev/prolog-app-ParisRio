@@ -4,3 +4,6 @@ export * from "./footer";
 export * from "./page-container";
 export * from "./sidebar-navigation";
 export * from "./loading-indicator";
+export * from "./button-cta";
+export * from "./checkbox";
+export * from "./select";
