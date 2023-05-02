@@ -7,3 +7,4 @@ export * from "./loading-indicator";
 export * from "./button-cta";
 export * from "./checkbox";
 export * from "./select";
+export * from "./input";
