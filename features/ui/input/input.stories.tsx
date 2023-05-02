@@ -25,7 +25,7 @@ const Template: ComponentStory<typeof Input> = ({
       paddingTop: 50,
       paddingRight: 50,
       paddingLeft: 50,
-      paddingBottom: 200,
+      paddingBottom: 50,
     }}
   >
     <Input
@@ -43,12 +43,12 @@ const Template: ComponentStory<typeof Input> = ({
 export const Default = Template.bind({});
 Default.args = {
   disabled: false,
-  placeholder: "Select team member",
-  label: "Team member",
+  placeholder: "olivia@untitledui.com",
+  label: "Email",
   hint: "This is a hint text to help user.",
   error: false,
   errorMessage: "This is a error message.",
-  iconSrc: "/icons/select-icon.svg",
+  iconSrc: "/icons/email.svg",
 };
 Default.parameters = {
   viewMode: "docs",
