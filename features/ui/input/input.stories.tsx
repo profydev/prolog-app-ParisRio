@@ -14,10 +14,11 @@ export default {
 const Template: ComponentStory<typeof Input> = ({
   placeholder,
   label,
+  leadingIconSrc,
   hint,
   error,
   errorMessage,
-  iconSrc,
+  errorIconSrc,
   disabled,
 }) => (
   <div
@@ -35,7 +36,8 @@ const Template: ComponentStory<typeof Input> = ({
       errorMessage={errorMessage}
       placeholder={placeholder}
       disabled={disabled}
-      iconSrc={iconSrc}
+      leadingIconSrc={leadingIconSrc}
+      errorIconSrc={errorIconSrc}
     />
   </div>
 );
@@ -45,10 +47,11 @@ Default.args = {
   disabled: false,
   placeholder: "olivia@untitledui.com",
   label: "Email",
+  leadingIconSrc: "/icons/email.svg",
   hint: "This is a hint text to help user.",
   error: false,
   errorMessage: "This is a error message.",
-  iconSrc: "/icons/email.svg",
+  errorIconSrc: "/icons/alert-circle.svg",
 };
 Default.parameters = {
   viewMode: "docs",
