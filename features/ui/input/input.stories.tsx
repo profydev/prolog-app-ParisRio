@@ -12,6 +12,7 @@ export default {
 } as ComponentMeta<typeof Input>;
 
 const Template: ComponentStory<typeof Input> = ({
+  type,
   placeholder,
   label,
   leadingIconSrc,
@@ -30,6 +31,7 @@ const Template: ComponentStory<typeof Input> = ({
     }}
   >
     <Input
+      type={type}
       label={label}
       hint={hint}
       error={error}
@@ -44,6 +46,7 @@ const Template: ComponentStory<typeof Input> = ({
 
 export const Default = Template.bind({});
 Default.args = {
+  type: "password",
   disabled: false,
   placeholder: "olivia@untitledui.com",
   label: "Email",
