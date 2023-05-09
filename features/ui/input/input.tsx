@@ -8,7 +8,8 @@ import styled, { css } from "styled-components";
 type AllowedInputTypes = "text" | "email" | "password" | "url" | "search";
 
 //Global input component props.
-type InputProps = {
+//Includes the 'standard' input element props and the custom props.
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   /**
    * The type of the input field. Determines the input behavior and validation.
    * Allowed types: "text", "email", "password", "url", "search".
@@ -33,8 +34,7 @@ type InputProps = {
 };
 
 //Input styled components props
-//Includes the 'normal' input props and the components custom props.
-type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type InputFieldProps = {
   /** Enables error mode and related CSS rules */
   error?: boolean;
   /** URL of the trailing error icon; adds padding on the right side to accommodate it */

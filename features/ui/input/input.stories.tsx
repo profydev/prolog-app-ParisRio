@@ -46,7 +46,7 @@ const Template: ComponentStory<typeof Input> = ({
 
 export const Default = Template.bind({});
 Default.args = {
-  type: "password",
+  type: "text",
   disabled: false,
   placeholder: "olivia@untitledui.com",
   label: "Email",
