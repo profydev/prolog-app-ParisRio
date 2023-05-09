@@ -9,7 +9,7 @@ export enum ButtonCtaSize {
   xl = "xl",
 }
 
-export enum ButtonCtaColor {
+export enum ButtonCtaColorType {
   primary = "primary",
   secondary = "secondary",
   gray = "gray",
@@ -24,18 +24,33 @@ export enum ButtonCtaIconPosition {
   iconOnly = "iconOnly",
 }
 
-type ButtonProps = {
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  /** The content to be displayed inside the button */
   children?: React.ReactNode;
+  /**
+   * The size of the button (e.g., "sm", "md", "lg", "xl").
+   * Determines the font-size, padding, and overall dimensions.
+   */
   size?: ButtonCtaSize;
-  color?: ButtonCtaColor;
+  /**
+   * The color of the button (e.g., "primary", "error",...).
+   * Determines the background color and text color.
+   */
+  ButtonCtaColor?: ButtonCtaColorType;
+  /** URL of the icon to display within the button */
   iconSrc?: string;
+  /**
+   * The position of the icon inside the button (e.g., "leading", "trailing", "iconOnly").
+   * Determines whether the icon is displayed before or after the text, or if the button contains only an icon.
+   */
   iconPosition?: ButtonCtaIconPosition;
+  /** Disables the button when set to true */
   disabled?: boolean;
 };
 
 export const Container = styled.button<{
   size: ButtonCtaSize;
-  color: ButtonCtaColor;
+  ButtonCtaColor: ButtonCtaColorType;
 }>`
   cursor: pointer;
 
@@ -85,7 +100,7 @@ export const Container = styled.button<{
   //Color and state
   ${(props) => {
     //Primary
-    if (props.color === ButtonCtaColor.primary) {
+    if (props.ButtonCtaColor === ButtonCtaColorType.primary) {
       return css`
         color: white;
         background: ${color("primary", 600)};
@@ -109,7 +124,7 @@ export const Container = styled.button<{
     }
 
     //Secondary
-    else if (props.color === ButtonCtaColor.secondary) {
+    else if (props.ButtonCtaColor === ButtonCtaColorType.secondary) {
       return css`
         background: ${color("primary", 50)};
         color: ${color("primary", 700)};
@@ -134,7 +149,7 @@ export const Container = styled.button<{
     }
 
     //Gray
-    else if (props.color === ButtonCtaColor.gray) {
+    else if (props.ButtonCtaColor === ButtonCtaColorType.gray) {
       return css`
         background: white;
         color: ${color("gray", 700)};
@@ -158,7 +173,7 @@ export const Container = styled.button<{
     }
 
     //Empty
-    else if (props.color === ButtonCtaColor.empty) {
+    else if (props.ButtonCtaColor === ButtonCtaColorType.empty) {
       return css`
         color: ${color("primary", 700)};
         &:hover {
@@ -175,7 +190,7 @@ export const Container = styled.button<{
     }
 
     //Empty gray
-    else if (props.color === ButtonCtaColor.emptyGray) {
+    else if (props.ButtonCtaColor === ButtonCtaColorType.emptyGray) {
       return css`
         color: ${color("gray", 500)};
         &:hover {
@@ -193,7 +208,7 @@ export const Container = styled.button<{
     }
 
     //Error
-    else if (props.color === ButtonCtaColor.error) {
+    else if (props.ButtonCtaColor === ButtonCtaColorType.error) {
       return css`
         background: ${color("error", 600)};
         color: white;
@@ -239,17 +254,23 @@ export const Icon = styled.img<{
 export function ButtonCTA({
   children,
   size = ButtonCtaSize.md,
-  color = ButtonCtaColor.primary,
+  ButtonCtaColor = ButtonCtaColorType.primary,
   iconSrc,
   iconPosition = ButtonCtaIconPosition.leading,
   disabled = false,
+  ...rest
 }: ButtonProps) {
   //First case is for Button CTA with only icon and no Text.
   //Then Case for Button CTA with leading or trailing icon + Text
   //Case for Button CTA with only text (no icon src provided)
 
   return (
-    <Container as="button" size={size} color={color} disabled={disabled}>
+    <Container
+      size={size}
+      ButtonCtaColor={ButtonCtaColor}
+      disabled={disabled}
+      {...rest}
+    >
       {iconSrc && iconPosition === ButtonCtaIconPosition.iconOnly ? (
         <Icon src={iconSrc} alt={`icon`} iconPosition={iconPosition} />
       ) : (

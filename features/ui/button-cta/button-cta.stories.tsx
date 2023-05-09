@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import {
   ButtonCTA,
   ButtonCtaSize,
-  ButtonCtaColor,
+  ButtonCtaColorType,
   ButtonCtaIconPosition,
 } from "./button-cta";
 
@@ -18,20 +18,20 @@ export default {
 
 const Template: ComponentStory<typeof ButtonCTA> = ({
   size,
-  color,
+  ButtonCtaColor,
   iconSrc,
   iconPosition,
   disabled,
 }) => (
   <div style={{ padding: 50 }}>
     <ButtonCTA
-      color={color}
+      ButtonCtaColor={ButtonCtaColor}
       size={size}
       iconSrc={iconSrc}
       iconPosition={iconPosition}
       disabled={disabled}
     >
-      Test
+      Button CTA
     </ButtonCTA>
   </div>
 );
@@ -39,7 +39,7 @@ const Template: ComponentStory<typeof ButtonCTA> = ({
 export const Default = Template.bind({});
 Default.args = {
   size: ButtonCtaSize.sm,
-  color: ButtonCtaColor.primary,
+  ButtonCtaColor: ButtonCtaColorType.primary,
   iconSrc: "/icons/projects.svg",
   iconPosition: ButtonCtaIconPosition.leading,
   disabled: false,
