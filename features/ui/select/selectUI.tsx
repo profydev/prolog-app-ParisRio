@@ -8,19 +8,44 @@ import Select, {
   OptionProps as DefaultOptionProps,
   PlaceholderProps as DefaultPlaceholderProps,
   SingleValueProps as DefaultSingleValueProps,
+  Props as ReactSelectProps,
 } from "react-select";
 import styled, { css } from "styled-components";
 
 //nvm use default 16.14.2
 
-type SelectUIProps = {
+type SelectUIProps = ReactSelectProps & {
+  /**
+   * Placeholder text to display when no option is selected
+   */
   placeholder?: string;
+  /**
+   * Array of options for the select component
+   */
   options: Array<SelectOption>;
+  /**
+   * Label text to display above the select component
+   */
   label?: string;
+  /**
+   * Hint text to display below the select component when there is no error
+   */
   hint?: string;
+  /**
+   * Enables error mode and related CSS rules
+   */
   error?: boolean;
+  /**
+   * Error message to display below the select component when there is an error
+   */
   errorMessage?: string;
+  /**
+   * URL of the custom icon to be displayed with the selected option
+   */
   iconSrc?: string;
+  /**
+   * Disables the select component when set to true
+   */
   disabled?: boolean;
 };
 
@@ -98,11 +123,12 @@ const customStyles = (error: boolean | undefined): StylesConfig => ({
     borderRadius: "0.5rem",
     margin: "0.375rem 0",
     padding: "0.625rem 0.875rem",
-    boxShadow: error
-      ? "0px 1px 2px rgba(16, 24, 40, 0.05), 0px 0px 0px 4px #FEE4E2;"
-      : state.isFocused
-      ? "0px 1px 2px rgba(16, 24, 40, 0.05), 0px 0px 0px 4px #F4EBFF"
-      : "0px 1px 2px rgba(16, 24, 40, 0.05)",
+    boxShadow:
+      error && state.isFocused
+        ? "0px 1px 2px rgba(16, 24, 40, 0.05), 0px 0px 0px 4px #FEE4E2;"
+        : state.isFocused
+        ? "0px 1px 2px rgba(16, 24, 40, 0.05), 0px 0px 0px 4px #F4EBFF"
+        : "0px 1px 2px rgba(16, 24, 40, 0.05)",
     color: state.isDisabled
       ? `${color("primary", 500)({ theme })} `
       : `${color("gray", 900)({ theme })} `,
@@ -233,6 +259,7 @@ export function SelectUI({
   errorMessage,
   iconSrc,
   disabled,
+  ...rest
 }: SelectUIProps) {
   //A state is used to capture menu opening and closing. Information is used for the
   //Open and close icon is the dropdown indicator
@@ -242,6 +269,7 @@ export function SelectUI({
     <Container>
       <Label>{label}</Label>
       <Select
+        {...rest}
         options={options}
         placeholder={placeholder}
         isDisabled={disabled}
