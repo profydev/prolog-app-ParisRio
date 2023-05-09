@@ -8,11 +8,19 @@ export enum CheckboxSize {
 }
 
 //CheckBoxSize named is used in order not to conflict with <inpute> size attribute.
-type CheckboxProps = {
+type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  /** The content displayed on the label next to the checkbox */
   children: React.ReactNode;
+  /**
+   * The size of the checkbox.
+   * Allowed sizes: "sm", "md".
+   */
   checkboxSize?: CheckboxSize;
+  /** Indicates whether the checkbox is checked or not */
   checked?: boolean;
+  /** Disables the checkbox when set to true */
   disabled?: boolean;
+  /** Indicates whether the checkbox is in an indeterminate state */
   indeterminate?: boolean;
 };
 
@@ -158,6 +166,7 @@ export function Checkbox({
   checked = false,
   disabled = false,
   indeterminate = false,
+  ...rest
 }: CheckboxProps) {
   const [checkboxStatus, setCheckboxStatus] = useState(checked);
 
@@ -185,6 +194,7 @@ export function Checkbox({
         onChange={handleChange}
         disabled={disabled}
         indeterminate={indeterminate}
+        {...rest}
       />
       <Label checkboxSize={checkboxSize} disabled={disabled}>
         {children}
