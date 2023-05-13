@@ -1,6 +1,11 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { SelectUI } from "./selectUI";
+import styled from "styled-components";
+
+const Container = styled.div`
+  width: 320px;
+`;
 
 export default {
   title: "UI/Select",
@@ -28,20 +33,22 @@ const Template: ComponentStory<typeof SelectUI> = ({
       paddingBottom: 200,
     }}
   >
-    <SelectUI
-      options={[
-        { value: "Olivia Rhye", label: "Olivia Rhye" },
-        { value: "Lena Stue", label: "Lena Stue" },
-        { value: "John", label: "John" },
-      ]}
-      label={label}
-      hint={hint}
-      error={error}
-      errorMessage={errorMessage}
-      placeholder={placeholder}
-      disabled={disabled}
-      iconSrc={iconSrc}
-    />
+    <Container>
+      <SelectUI
+        options={[
+          { value: "Olivia Rhye", label: "Olivia Rhye" },
+          { value: "Lena Stue", label: "Lena Stue" },
+          { value: "John", label: "John" },
+        ]}
+        label={label}
+        hint={hint}
+        error={error}
+        errorMessage={errorMessage}
+        placeholder={placeholder}
+        disabled={disabled}
+        iconSrc={iconSrc}
+      />
+    </Container>
   </div>
 );
 

@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { useIssues } from "@features/issues";
+import { IssueFilter, useIssues } from "@features/issues";
 import { ProjectLanguage, useProjects } from "@features/projects";
 import { color, space, textFont } from "@styles/theme";
 import { IssueRow } from "./issue-row";
 
-const Container = styled.div`
+const TableContainer = styled.div`
   background: white;
   border: 1px solid ${color("gray", 200)};
   box-sizing: border-box;
@@ -73,6 +73,8 @@ export function IssueList() {
   const issuesPage = useIssues(page);
   const projects = useProjects();
 
+  //https://prolog-api.profy.dev/issue?page=1&limit=10&status=resolved&level=warning&project=back
+
   if (projects.isLoading || issuesPage.isLoading) {
     return <div>Loading</div>;
   }
@@ -97,46 +99,49 @@ export function IssueList() {
   const { items, meta } = issuesPage.data || {};
 
   return (
-    <Container>
-      <Table>
-        <thead>
-          <HeaderRow>
-            <HeaderCell>Issue</HeaderCell>
-            <HeaderCell>Level</HeaderCell>
-            <HeaderCell>Events</HeaderCell>
-            <HeaderCell>Users</HeaderCell>
-          </HeaderRow>
-        </thead>
-        <tbody>
-          {(items || []).map((issue) => (
-            <IssueRow
-              key={issue.id}
-              issue={issue}
-              projectLanguage={projectIdToLanguage[issue.projectId]}
-            />
-          ))}
-        </tbody>
-      </Table>
-      <PaginationContainer>
-        <div>
-          <PaginationButton
-            onClick={() => navigateToPage(page - 1)}
-            disabled={page === 1}
-          >
-            Previous
-          </PaginationButton>
-          <PaginationButton
-            onClick={() => navigateToPage(page + 1)}
-            disabled={page === meta?.totalPages}
-          >
-            Next
-          </PaginationButton>
-        </div>
-        <PageInfo>
-          Page <PageNumber>{meta?.currentPage}</PageNumber> of{" "}
-          <PageNumber>{meta?.totalPages}</PageNumber>
-        </PageInfo>
-      </PaginationContainer>
-    </Container>
+    <>
+      <IssueFilter />
+      <TableContainer>
+        <Table>
+          <thead>
+            <HeaderRow>
+              <HeaderCell>Issue</HeaderCell>
+              <HeaderCell>Level</HeaderCell>
+              <HeaderCell>Events</HeaderCell>
+              <HeaderCell>Users</HeaderCell>
+            </HeaderRow>
+          </thead>
+          <tbody>
+            {(items || []).map((issue) => (
+              <IssueRow
+                key={issue.id}
+                issue={issue}
+                projectLanguage={projectIdToLanguage[issue.projectId]}
+              />
+            ))}
+          </tbody>
+        </Table>
+        <PaginationContainer>
+          <div>
+            <PaginationButton
+              onClick={() => navigateToPage(page - 1)}
+              disabled={page === 1}
+            >
+              Previous
+            </PaginationButton>
+            <PaginationButton
+              onClick={() => navigateToPage(page + 1)}
+              disabled={page === meta?.totalPages}
+            >
+              Next
+            </PaginationButton>
+          </div>
+          <PageInfo>
+            Page <PageNumber>{meta?.currentPage}</PageNumber> of{" "}
+            <PageNumber>{meta?.totalPages}</PageNumber>
+          </PageInfo>
+        </PaginationContainer>
+      </TableContainer>
+    </>
   );
 }
