@@ -64,16 +64,21 @@ const PageNumber = styled.span`
 export function IssueList() {
   const router = useRouter();
   const page = Number(router.query.page || 1);
-  const navigateToPage = (newPage: number) =>
+  const level = String(router.query.level || undefined);
+
+  const navigateToPage = (newPage: number, newLevel?: string) => {
+    const query: { page: number; level?: string } = { page: newPage };
+    if (newLevel) {
+      query.level = newLevel;
+    }
     router.push({
       pathname: router.pathname,
-      query: { page: newPage },
+      query: query,
     });
+  };
 
-  const issuesPage = useIssues(page);
+  const issuesPage = useIssues(page, level);
   const projects = useProjects();
-
-  //https://prolog-api.profy.dev/issue?page=1&limit=10&status=resolved&level=warning&project=back
 
   if (projects.isLoading || issuesPage.isLoading) {
     return <div>Loading</div>;

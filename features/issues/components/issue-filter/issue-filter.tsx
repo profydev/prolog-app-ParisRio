@@ -32,8 +32,8 @@ const SearchInput = styled(Input)`
 export function IssueFilter() {
   return (
     <FilterContainer>
-      <StatusSelect options={status} placeholder="Status" />
-      <LevelSelect options={level} placeholder="Level" />
+      <StatusSelect options={status} placeholder="Status" isClearable />
+      <LevelSelect options={level} placeholder="Level" isClearable />
       <SearchInput
         placeholder="Project Name"
         leadingIconSrc="/icons/search.svg"

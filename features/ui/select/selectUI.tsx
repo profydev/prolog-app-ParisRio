@@ -170,6 +170,10 @@ const customStyles = (error: boolean | undefined): StylesConfig => ({
     ...provided,
     padding: "0 0",
   }),
+  clearIndicator: (provided) => ({
+    ...provided,
+    padding: "0 0",
+  }),
   option: (provided, state) => ({
     ...provided,
     display: "flex",

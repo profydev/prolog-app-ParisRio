@@ -4,17 +4,22 @@ import axios from "axios";
 import type { Page } from "@typings/page.types";
 import type { Issue } from "../types/issue.types";
 
-async function getIssues(page: number) {
-  const { data } = await axios.get(
-    `https://prolog-api.profy.dev/issue?page=${page}`
-  );
+//https://prolog-api.profy.dev/issue?page=1&limit=10&status=resolved&level=warning&project=back
+async function getIssues(page: number, level?: string) {
+  let url = `https://prolog-api.profy.dev/issue?page=${page}`;
+
+  if (level) {
+    url = `${url}&level=${level}`;
+  }
+
+  const { data } = await axios.get(url);
   return data;
 }
 
-export function useIssues(page: number) {
+export function useIssues(page: number, level: string) {
   const query = useQuery<Page<Issue>, Error>(
-    ["issues", page],
-    () => getIssues(page),
+    ["issues", page, level],
+    () => getIssues(page, level),
     { keepPreviousData: true, staleTime: 60000 }
   );
 
