@@ -13,6 +13,10 @@ import Select, {
 import styled, { css } from "styled-components";
 
 //nvm use default 16.14.2
+type SelectOption = {
+  value: unknown;
+  label: unknown;
+};
 
 type SelectUIProps = ReactSelectProps & {
   /**
@@ -65,11 +69,6 @@ interface PlaceholderProps extends DefaultPlaceholderProps {
 interface SingleValueProps extends DefaultSingleValueProps {
   iconSrc: string | undefined;
 }
-
-type SelectOption = {
-  value: string;
-  label: string;
-};
 
 //Wrapper for the total component
 const Container = styled.div`

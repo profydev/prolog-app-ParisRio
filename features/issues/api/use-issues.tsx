@@ -7,16 +7,18 @@ import type { Issue } from "../types/issue.types";
 //https://prolog-api.profy.dev/issue?page=1&limit=10&status=resolved&level=warning&project=back
 async function getIssues(page: number, level?: string) {
   let url = `https://prolog-api.profy.dev/issue?page=${page}`;
+  console.log(level);
 
   if (level) {
     url = `${url}&level=${level}`;
   }
+  console.log(url);
 
   const { data } = await axios.get(url);
   return data;
 }
 
-export function useIssues(page: number, level: string) {
+export function useIssues(page: number, level?: string) {
   const query = useQuery<Page<Issue>, Error>(
     ["issues", page, level],
     () => getIssues(page, level),

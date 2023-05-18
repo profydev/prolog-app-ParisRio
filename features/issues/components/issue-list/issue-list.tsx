@@ -64,7 +64,7 @@ const PageNumber = styled.span`
 export function IssueList() {
   const router = useRouter();
   const page = Number(router.query.page || 1);
-  const level = String(router.query.level || undefined);
+  const level = router.query.level ? String(router.query.level) : undefined;
 
   const navigateToPage = (newPage: number, newLevel?: string) => {
     const query: { page: number; level?: string } = { page: newPage };
@@ -105,7 +105,7 @@ export function IssueList() {
 
   return (
     <>
-      <IssueFilter />
+      <IssueFilter navigateToPage={navigateToPage} />
       <TableContainer>
         <Table>
           <thead>
