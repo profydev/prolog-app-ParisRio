@@ -1,6 +1,6 @@
 import { Input, SelectUI } from "@features/ui";
 import { space } from "@styles/theme";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
 
 type OptionType = {
@@ -17,6 +17,13 @@ const levelOptions: OptionType[] = [
   { value: "warning", label: "Warning" },
   { value: "info", label: "Info" },
 ];
+
+type FilterType = {
+  page: number;
+  status: string | undefined;
+  level: string | undefined;
+  project: string | undefined;
+};
 
 const FilterContainer = styled.div`
   display: flex;
@@ -36,35 +43,69 @@ const SearchInput = styled(Input)`
 `;
 
 type issueFilterProps = {
-  navigateToPage: (newPage: number, newLevel?: string) => void;
+  setFilter: Dispatch<SetStateAction<FilterType>>;
 };
 
-export function IssueFilter({ navigateToPage }: issueFilterProps) {
-  const handleChange = (selectedOption: unknown) => {
-    console.log(selectedOption);
-    //Need to by pass react-select defining the option as unknown type.
-    if (selectedOption === null) {
-      navigateToPage(1);
-    } else {
-      const option = selectedOption as OptionType;
-      if (option.value) {
-        navigateToPage(1, option.value);
+export function IssueFilter({ setFilter }: issueFilterProps) {
+  const handleSelectChange =
+    (identifyer: string) => (selectedOption: unknown) => {
+      console.log(selectedOption);
+      console.log(identifyer);
+      if (selectedOption === null) {
+        setFilter((previous) => {
+          return {
+            ...previous,
+            [identifyer]: undefined,
+          };
+        });
+      } else {
+        //Need to by pass react-select defining the option as unknown type.
+        const option = selectedOption as OptionType;
+        setFilter((previous) => {
+          return {
+            ...previous,
+            [identifyer]: option.value,
+          };
+        });
       }
+    };
+
+  const handleProjectInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value !== "") {
+      setFilter((previous) => {
+        return {
+          ...previous,
+          project: event.target.value,
+        };
+      });
+    } else {
+      setFilter((previous) => {
+        return {
+          ...previous,
+          project: undefined,
+        };
+      });
     }
   };
 
   return (
     <FilterContainer>
-      <StatusSelect options={statusOptions} placeholder="Status" isClearable />
+      <StatusSelect
+        options={statusOptions}
+        placeholder="Status"
+        isClearable
+        onChange={handleSelectChange("status")}
+      />
       <LevelSelect
         options={levelOptions}
         placeholder="Level"
         isClearable
-        onChange={handleChange}
+        onChange={handleSelectChange("level")}
       />
       <SearchInput
         placeholder="Project Name"
         leadingIconSrc="/icons/search.svg"
+        onChange={handleProjectInput}
       />
     </FilterContainer>
   );

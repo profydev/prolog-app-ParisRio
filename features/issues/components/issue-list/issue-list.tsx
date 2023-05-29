@@ -4,6 +4,7 @@ import { IssueFilter, useIssues } from "@features/issues";
 import { ProjectLanguage, useProjects } from "@features/projects";
 import { color, space, textFont } from "@styles/theme";
 import { IssueRow } from "./issue-row";
+import { useCallback, useEffect, useState } from "react";
 
 const TableContainer = styled.div`
   background: white;
@@ -61,23 +62,65 @@ const PageNumber = styled.span`
   ${textFont("sm", "medium")}
 `;
 
+type FilterType = {
+  page: number;
+  status: string | undefined;
+  level: string | undefined;
+  project: string | undefined;
+};
+
 export function IssueList() {
   const router = useRouter();
-  const page = Number(router.query.page || 1);
-  const level = router.query.level ? String(router.query.level) : undefined;
 
-  const navigateToPage = (newPage: number, newLevel?: string) => {
-    const query: { page: number; level?: string } = { page: newPage };
-    if (newLevel) {
-      query.level = newLevel;
-    }
-    router.push({
-      pathname: router.pathname,
-      query: query,
-    });
-  };
+  const [filter, setFilter] = useState<FilterType>({
+    page: Number(router.query.page || 1),
+    status: router.query.level ? String(router.query.level) : undefined,
+    level: router.query.status ? String(router.query.status) : undefined,
+    project: router.query.project ? String(router.query.project) : undefined,
+  });
+  console.log(filter);
 
-  const issuesPage = useIssues(page, level);
+  const navigateToPage = useCallback(
+    (
+      newPage: number,
+      newLevel?: string,
+      newStatus?: string,
+      newProject?: string
+    ) => {
+      const query: {
+        page: string;
+        level?: string;
+        status?: string;
+        project?: string;
+      } = { page: String(newPage) };
+      console.log(router.query);
+      console.log(query);
+
+      if (newLevel) {
+        query.level = newLevel;
+      }
+      if (newStatus) {
+        query.status = newStatus;
+      }
+      if (newProject) {
+        query.project = newProject;
+      }
+      //handle the initial first render and compare queries before pushing a new page.
+      if (JSON.stringify(router.query) !== JSON.stringify(query)) {
+        router.push({
+          pathname: router.pathname,
+          query: query,
+        });
+      }
+    },
+    [router]
+  );
+
+  useEffect(() => {
+    navigateToPage(filter.page, filter.level, filter.status, filter.project);
+  }, [navigateToPage, filter]);
+
+  const issuesPage = useIssues(filter.page, filter.level, filter.status);
   const projects = useProjects();
 
   if (projects.isLoading || issuesPage.isLoading) {
@@ -105,7 +148,7 @@ export function IssueList() {
 
   return (
     <>
-      <IssueFilter navigateToPage={navigateToPage} />
+      <IssueFilter setFilter={setFilter} />
       <TableContainer>
         <Table>
           <thead>
@@ -129,14 +172,28 @@ export function IssueList() {
         <PaginationContainer>
           <div>
             <PaginationButton
-              onClick={() => navigateToPage(page - 1)}
-              disabled={page === 1}
+              onClick={() =>
+                navigateToPage(
+                  filter.page - 1,
+                  filter.level,
+                  filter.status,
+                  filter.project
+                )
+              }
+              disabled={filter.page === 1}
             >
               Previous
             </PaginationButton>
             <PaginationButton
-              onClick={() => navigateToPage(page + 1)}
-              disabled={page === meta?.totalPages}
+              onClick={() =>
+                navigateToPage(
+                  filter.page + 1,
+                  filter.level,
+                  filter.status,
+                  filter.project
+                )
+              }
+              disabled={filter.page === meta?.totalPages}
             >
               Next
             </PaginationButton>

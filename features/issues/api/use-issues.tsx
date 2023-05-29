@@ -5,10 +5,14 @@ import type { Page } from "@typings/page.types";
 import type { Issue } from "../types/issue.types";
 
 //https://prolog-api.profy.dev/issue?page=1&limit=10&status=resolved&level=warning&project=back
-async function getIssues(page: number, level?: string) {
+async function getIssues(page: number, level?: string, status?: string) {
   let url = `https://prolog-api.profy.dev/issue?page=${page}`;
-  console.log(level);
+  //console.log(level);
+  //console.log(status);
 
+  if (status) {
+    url = `${url}&status=${status}`;
+  }
   if (level) {
     url = `${url}&level=${level}`;
   }
@@ -18,10 +22,10 @@ async function getIssues(page: number, level?: string) {
   return data;
 }
 
-export function useIssues(page: number, level?: string) {
+export function useIssues(page: number, level?: string, status?: string) {
   const query = useQuery<Page<Issue>, Error>(
-    ["issues", page, level],
-    () => getIssues(page, level),
+    ["issues", page, level, status],
+    () => getIssues(page, level, status),
     { keepPreviousData: true, staleTime: 60000 }
   );
 
