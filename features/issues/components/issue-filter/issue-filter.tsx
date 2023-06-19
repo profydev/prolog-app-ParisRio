@@ -53,20 +53,26 @@ const useFilter = () => {
   } as FilterType;
 
   const handleFilters = (newFilter: FilterType) => {
+    //console.log(newFilter);
+
     let query = { ...router.query };
     //need to handle the cases where a select or input is reset (value set to undefined), then the query should be deleted
     for (const key in newFilter) {
+      //We will use FilterType keys to loop through query which is of type QueryType
+      //we need to ensutre that we match the correct keys between the two types
+
       const value = newFilter[key as keyof FilterType];
-      console.log(value);
+
       if (value === undefined || value === "") {
         //check if this key is present in the existing query and if yes remove it
         if (key in query) {
           delete query[key];
         }
       }
-      //if the query is not undefined, push it to the query
+      //if the newFilter value exist, push it to the query.
+      //Page value is reset to 1 when a new filter is applied
       else {
-        query = { ...query, [key]: value };
+        query = { ...query, [key]: value, page: "1" };
       }
     }
     router.push({ query });
@@ -80,7 +86,8 @@ export function IssueFilter() {
   const [searchInputText, setSearchInputText] = useState(filters.project || "");
   const debounced = useDebouncedCallback((value: FilterType) => {
     handleFilters(value);
-  }, 1000);
+    //console.log('debounce fires');
+  }, 300);
 
   //Initiate the Select and Input components with the filter object obtained from getFilter
   const getStatusSelectDefaultValue = (filters: FilterType) => {
@@ -111,7 +118,7 @@ export function IssueFilter() {
     const { name } = actionMeta;
     if (selectedOption) {
       const option = selectedOption as OptionType;
-      console.log(option);
+      //console.log(option);
       if (name === "level") {
         handleFilters({ level: option.value });
       } else if (name === "status") {
@@ -127,8 +134,8 @@ export function IssueFilter() {
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInputText(event.target.value);
     debounced({ project: event.target.value });
+    setSearchInputText(event.target.value);
   };
 
   return (

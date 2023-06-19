@@ -4,6 +4,7 @@ import { IssueFilter, useIssues } from "@features/issues";
 import { ProjectLanguage, useProjects } from "@features/projects";
 import { color, space, textFont } from "@styles/theme";
 import { IssueRow } from "./issue-row";
+import { useEffect } from "react";
 
 const TableContainer = styled.div`
   background: white;
@@ -62,22 +63,36 @@ const PageNumber = styled.span`
 `;
 
 type FilterType = {
-  page: number;
-  status: string | undefined;
-  level: string | undefined;
-  project: string | undefined;
+  status?: string;
+  level?: string;
+  project?: string;
 };
 
 export function IssueList() {
   const router = useRouter();
   const page = Number(router.query.page || 1);
-  const navigateToPage = (newPage: number) =>
-    router.push({
-      pathname: router.pathname,
-      query: { page: newPage },
-    });
+  //console.log('I render');
+  //console.log(`router.query.project is ${router.query.project}`);
 
-  const issuesPage = useIssues(page);
+  const filters = {
+    status: router.query.status,
+    level: router.query.level,
+    project: router.query.project,
+  } as FilterType;
+  //console.log(`filters project is ${router.query.project}`);
+
+  const navigateToPage = (newPage: number) => {
+    //other queries from the filter may be present
+    const query = { ...router.query, page: newPage };
+    router.push({ query });
+  };
+
+  const issuesPage = useIssues(
+    page,
+    filters.status,
+    filters.level,
+    filters.project
+  );
   const projects = useProjects();
 
   if (projects.isLoading || issuesPage.isLoading) {
