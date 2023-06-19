@@ -29,7 +29,8 @@
     "react-query": "^3.34.19",
     "react-select": "^5.7.2",
     "styled-components": "^5.3.3",
-    "styled-normalize": "^8.0.7"
+    "styled-normalize": "^8.0.7",
+    "use-debounce": "^9.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
