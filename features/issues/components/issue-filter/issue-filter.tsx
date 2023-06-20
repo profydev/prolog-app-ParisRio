@@ -1,5 +1,5 @@
 import { Input, SelectUI } from "@features/ui";
-import { space } from "@styles/theme";
+import { space, breakpoint } from "@styles/theme";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { ActionMeta } from "react-select";
@@ -29,19 +29,34 @@ type FilterType = {
 
 const FilterContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   margin-bottom: 1.5rem;
+  @media (min-width: ${breakpoint("desktop")}) {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 `;
 const StatusSelect = styled(SelectUI)`
-  margin-right: ${space(4)};
-  width: 10rem;
+  margin-bottom: ${space(4)};
+  width: 100%;
+  @media (min-width: ${breakpoint("desktop")}) {
+    margin-right: ${space(4)};
+    width: 10rem;
+  }
 `;
 const LevelSelect = styled(SelectUI)`
-  margin-right: ${space(4)};
-  width: 10rem;
+  margin-bottom: ${space(4)};
+  width: 100%;
+  @media (min-width: ${breakpoint("desktop")}) {
+    margin-right: ${space(4)};
+    width: 10rem;
+  }
 `;
 const SearchInput = styled(Input)`
-  width: 17.5rem;
+  width: 100%;
+  @media (min-width: ${breakpoint("desktop")}) {
+    width: 17.5rem;
+  }
 `;
 
 const useFilter = () => {
