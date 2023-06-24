@@ -13,6 +13,10 @@ import Select, {
 import styled, { css } from "styled-components";
 
 //nvm use default 16.14.2
+type SelectOption = {
+  value: unknown;
+  label: unknown;
+};
 
 type SelectUIProps = ReactSelectProps & {
   /**
@@ -66,14 +70,8 @@ interface SingleValueProps extends DefaultSingleValueProps {
   iconSrc: string | undefined;
 }
 
-type SelectOption = {
-  value: string;
-  label: string;
-};
-
 //Wrapper for the total component
 const Container = styled.div`
-  width: fit-content;
   display: flex;
   flex-direction: column;
 `;
@@ -81,11 +79,13 @@ const Container = styled.div`
 const Label = styled.label`
   ${textFont("sm", "medium")}
   color: ${color("gray", 700)};
+  margin-bottom: 0.375rem;
 `;
 
 const Hint = styled.span<{
   error: boolean | undefined;
 }>`
+  margin-top: 0.375rem;
   ${textFont("sm", "regular")}
   ${(props) => {
     if (props.error) {
@@ -108,8 +108,6 @@ const Hint = styled.span<{
 const customStyles = (error: boolean | undefined): StylesConfig => ({
   control: (provided, state) => ({
     ...provided,
-    width: "320px",
-    // height: "44px",
     backgroundColor: state.isDisabled
       ? `${color("gray", 50)({ theme })} `
       : "white",
@@ -121,7 +119,6 @@ const customStyles = (error: boolean | undefined): StylesConfig => ({
       ? `${color("primary", 300)({ theme })} `
       : `${color("gray", 300)({ theme })} `,
     borderRadius: "0.5rem",
-    margin: "0.375rem 0",
     padding: "0.625rem 0.875rem",
     boxShadow:
       error && state.isFocused
@@ -169,6 +166,10 @@ const customStyles = (error: boolean | undefined): StylesConfig => ({
     display: "none",
   }),
   dropdownIndicator: (provided) => ({
+    ...provided,
+    padding: "0 0",
+  }),
+  clearIndicator: (provided) => ({
     ...provided,
     padding: "0 0",
   }),
@@ -267,7 +268,7 @@ export function SelectUI({
 
   return (
     <Container>
-      <Label>{label}</Label>
+      {label && <Label>{label}</Label>}
       <Select
         {...rest}
         options={options}
@@ -285,7 +286,9 @@ export function SelectUI({
           SingleValue: (props) => <SingleValue {...props} iconSrc={iconSrc} />,
         }}
       />
-      <Hint error={error}>{error ? errorMessage : hint}</Hint>
+      {((error && errorMessage) || hint) && (
+        <Hint error={error}>{error ? errorMessage : hint}</Hint>
+      )}
     </Container>
   );
 }

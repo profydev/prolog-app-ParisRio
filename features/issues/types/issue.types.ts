@@ -14,3 +14,14 @@ export type Issue = {
   numEvents: number;
   numUsers: number;
 };
+
+export type SelectFilterOptionType = {
+  value: string;
+  label: string;
+};
+
+export type FilterType = {
+  status?: string;
+  level?: string;
+  project?: string;
+};

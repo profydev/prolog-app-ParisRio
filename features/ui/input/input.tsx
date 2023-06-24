@@ -45,7 +45,6 @@ type InputFieldProps = {
 
 //Wrapper for the complete component
 const Container = styled.div`
-  width: fit-content;
   display: flex;
   flex-direction: column;
 `;
@@ -53,6 +52,7 @@ const Container = styled.div`
 const Label = styled.label`
   ${textFont("sm", "medium")}
   color: ${color("gray", 700)};
+  margin-bottom: 0.375rem;
 `;
 //Input field is wrapped inside a div to accomodate the optional leading icon and trailing error icon.
 //Both these icons are added above the input field with 'absolute' css rule.
@@ -78,7 +78,7 @@ const ErrorIcon = styled.img`
 const InputField = styled.input<InputFieldProps>`
   //Remove input basic style
   all: unset;
-  min-width: 20rem;
+  width: 100%;
   height: 2.75rem;
   //It is needed to adapt the padding inside the input when leading and error icons are provided.
   //Passed as props inside the input component
@@ -88,7 +88,6 @@ const InputField = styled.input<InputFieldProps>`
     error && errorIconSrc ? `2.5rem` : `0.875rem`};
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
-  margin: 0.375rem 0rem;
   background: #ffffff;
   ${textFont("md", "regular")};
   color: ${color("gray", 900)};
@@ -131,6 +130,7 @@ const InputField = styled.input<InputFieldProps>`
 const Hint = styled.span<{
   error?: boolean;
 }>`
+  margin-top: 0.375rem;
   ${textFont("sm", "regular")}
   ${(props) => {
     if (props.error) {
@@ -159,7 +159,7 @@ export function Input({
 }: InputProps) {
   return (
     <Container>
-      <Label>{label}</Label>
+      {label && <Label>{label}</Label>}
       <InputWrapper>
         {leadingIconSrc && <LeadingIcon src={leadingIconSrc} alt={`icon`} />}
         {error && errorIconSrc && (
@@ -175,7 +175,9 @@ export function Input({
           {...rest}
         />
       </InputWrapper>
-      <Hint error={error}>{error ? errorMessage : hint}</Hint>
+      {((error && errorMessage) || hint) && (
+        <Hint error={error}>{error ? errorMessage : hint}</Hint>
+      )}
     </Container>
   );
 }

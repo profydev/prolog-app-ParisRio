@@ -1,6 +1,11 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Input } from "./input";
+import styled from "styled-components";
+
+const Container = styled.div`
+  width: 20rem;
+`;
 
 export default {
   title: "UI/Input",
@@ -30,17 +35,19 @@ const Template: ComponentStory<typeof Input> = ({
       paddingBottom: 50,
     }}
   >
-    <Input
-      type={type}
-      label={label}
-      hint={hint}
-      error={error}
-      errorMessage={errorMessage}
-      placeholder={placeholder}
-      disabled={disabled}
-      leadingIconSrc={leadingIconSrc}
-      errorIconSrc={errorIconSrc}
-    />
+    <Container>
+      <Input
+        type={type}
+        label={label}
+        hint={hint}
+        error={error}
+        errorMessage={errorMessage}
+        placeholder={placeholder}
+        disabled={disabled}
+        leadingIconSrc={leadingIconSrc}
+        errorIconSrc={errorIconSrc}
+      />
+    </Container>
   </div>
 );
 
