@@ -1,10 +1,9 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { IssueFilter, useIssues } from "@features/issues";
+import { FilterType, IssueFilter, useIssues } from "@features/issues";
 import { ProjectLanguage, useProjects } from "@features/projects";
 import { color, space, textFont } from "@styles/theme";
 import { IssueRow } from "./issue-row";
-import { useEffect } from "react";
 
 const TableContainer = styled.div`
   background: white;
@@ -62,27 +61,18 @@ const PageNumber = styled.span`
   ${textFont("sm", "medium")}
 `;
 
-type FilterType = {
-  status?: string;
-  level?: string;
-  project?: string;
-};
-
 export function IssueList() {
   const router = useRouter();
   const page = Number(router.query.page || 1);
-  //console.log('I render');
-  //console.log(`router.query.project is ${router.query.project}`);
 
   const filters = {
     status: router.query.status,
     level: router.query.level,
     project: router.query.project,
   } as FilterType;
-  //console.log(`filters project is ${router.query.project}`);
 
   const navigateToPage = (newPage: number) => {
-    //other queries from the filter may be present
+    //other queries from the filter may be present and thus merged to the new query
     const query = { ...router.query, page: newPage };
     router.push({ query });
   };

@@ -1,3 +1,7 @@
+import {
+  FilterType,
+  SelectFilterOptionType,
+} from "@features/issues/types/issue.types";
 import { Input, SelectUI } from "@features/ui";
 import { space, breakpoint } from "@styles/theme";
 import { useRouter } from "next/router";
@@ -6,31 +10,10 @@ import { ActionMeta } from "react-select";
 import styled from "styled-components";
 import { useDebouncedCallback } from "use-debounce";
 
-type OptionType = {
-  value: string;
-  label: string;
-};
-
-const statusOptions: OptionType[] = [
-  { value: "open", label: "Unresolved" },
-  { value: "resolved", label: "Resolved" },
-];
-const levelOptions: OptionType[] = [
-  { value: "error", label: "Error" },
-  { value: "warning", label: "Warning" },
-  { value: "info", label: "Info" },
-];
-
-type FilterType = {
-  status?: string;
-  level?: string;
-  project?: string;
-};
-
 const FilterContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.5rem;
+  margin-bottom: ${space(6)};
   @media (min-width: ${breakpoint("desktop")}) {
     flex-direction: row;
     justify-content: flex-end;
@@ -60,7 +43,7 @@ const SearchInput = styled(Input)`
 `;
 
 //Hook to obtain filter params from the url query params
-//Url query params are the source of thruth for the component and they are passed to the Selects or inputs
+//Url query params are the source of thruth for the component and they are passed to the Selects or the Input
 //When the Selects or Input provide a new value, the router queries are updated
 
 const useFilter = () => {
@@ -77,16 +60,13 @@ const useFilter = () => {
     //Then the query should be deleted
     for (const key in newFilter) {
       //Use FilterType keys to loop through query which is of type QueryType
-      //Provide the type for the key
       const value = newFilter[key as keyof FilterType];
       if (value === undefined || value === "") {
-        //Check if this key is present in the existing query, if yes remove it
         if (key in query) {
           delete query[key];
         }
       }
-      //If the newFilter value exist, push it to the router query.
-      //Page value is reset to 1 when a new filter is applied.
+      //If the newFilter value exist, push it to the router query and reset the page number.
       else {
         query = { ...query, [key]: value, page: "1" };
       }
@@ -96,63 +76,52 @@ const useFilter = () => {
   return { filters, handleFilters };
 };
 
+const statusOptions: SelectFilterOptionType[] = [
+  { value: "open", label: "Unresolved" },
+  { value: "resolved", label: "Resolved" },
+];
+const levelOptions: SelectFilterOptionType[] = [
+  { value: "error", label: "Error" },
+  { value: "warning", label: "Warning" },
+  { value: "info", label: "Info" },
+];
+
 export function IssueFilter() {
   const { filters, handleFilters } = useFilter();
 
   //Input is handled differently than the Select, the return value needs to be debounced
   //The useState is needed to get the 'current' value of Input and control it
-  //Te filter project value is debounced (available every 300 ms)
+  //Te filter project value is debounced (available only every 300 ms)
   const [searchInputText, setSearchInputText] = useState(filters.project || "");
   const debounced = useDebouncedCallback((value: FilterType) => {
     handleFilters(value);
   }, 300);
 
   //Initiate the Select components with the filter values object obtained from useFilter hook
-  const getStatusSelectDefaultValue = (filters: FilterType) => {
-    if (filters.status === "open") {
-      return { value: "open", label: "Unresolved" };
-    } else if (filters.status === "resolved") {
-      return { value: "resolved", label: "Resolved" };
-    }
+  const getSelectDefaultValue = (
+    filter: string | undefined,
+    selectOption: SelectFilterOptionType[]
+  ) => {
+    const defautValue = selectOption.find((option) => option.value === filter);
+    return defautValue;
   };
 
-  const getLevelSelectDefaultValue = (filters: FilterType) => {
-    if (filters.level === "error") {
-      return { value: "error", label: "Error" };
-    } else if (filters.level === "warning") {
-      return { value: "warning", label: "Warning" };
-    } else if (filters.level === "info") {
-      return { value: "info", label: "Info" };
-    }
-  };
-
-  //Wrapper to handle Select value change and trigger handleFilters from useFilter hook
   const handleSelectChange = (
     selectedOption: unknown,
     actionMeta: ActionMeta<unknown>
   ) => {
-    //React-select selectedOption is of unknown type by default, did not find anyway to change it to our option type
-
+    //React-select selectedOption is of unknown type by default, did not find anyway to change it to project option type
     //Get access to Select name through actionMeta
     const { name } = actionMeta;
     //Handle case where a value is provided or emptied (convert from null to undefined)
-    if (selectedOption) {
-      const option = selectedOption as OptionType;
-      if (name === "level") {
-        handleFilters({ level: option.value });
-      } else if (name === "status") {
-        handleFilters({ status: option.value });
-      }
-    } else if (selectedOption === null) {
-      if (name === "level") {
-        handleFilters({ level: undefined });
-      } else if (name === "status") {
-        handleFilters({ status: undefined });
-      }
+    if (selectedOption && name) {
+      const option = selectedOption as SelectFilterOptionType;
+      handleFilters({ [name]: option.value });
+    } else if (selectedOption === null && name) {
+      handleFilters({ [name]: undefined });
     }
   };
 
-  //Wrapper to handle Input value and trigger handleFilters from useFilter hook after a debounce
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     debounced({ project: event.target.value });
     setSearchInputText(event.target.value);
@@ -165,7 +134,7 @@ export function IssueFilter() {
         options={statusOptions}
         placeholder="Status"
         isClearable
-        defaultValue={getStatusSelectDefaultValue(filters)}
+        defaultValue={getSelectDefaultValue(filters.status, statusOptions)}
         onChange={handleSelectChange}
       />
       <LevelSelect
@@ -173,7 +142,7 @@ export function IssueFilter() {
         options={levelOptions}
         placeholder="Level"
         isClearable
-        defaultValue={getLevelSelectDefaultValue(filters)}
+        defaultValue={getSelectDefaultValue(filters.level, levelOptions)}
         onChange={handleSelectChange}
       />
       <SearchInput

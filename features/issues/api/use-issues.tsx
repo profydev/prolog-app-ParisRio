@@ -4,6 +4,7 @@ import axios from "axios";
 import type { Page } from "@typings/page.types";
 import type { Issue } from "../types/issue.types";
 
+//Typical api endpoint:
 //https://prolog-api.profy.dev/issue?page=1&limit=10&status=resolved&level=warning&project=back
 async function getIssues(
   page: number,
@@ -12,8 +13,6 @@ async function getIssues(
   project?: string
 ) {
   let url = `https://prolog-api.profy.dev/issue?page=${page}`;
-  //console.log(level);
-  //console.log(status);
 
   if (status) {
     url = `${url}&status=${status}`;
@@ -23,11 +22,11 @@ async function getIssues(
   }
   if (project) {
     url = `${url}&project=${project}`;
+    //Example of project name in the API
     //"ML Service",
     //"Backend"
     //"Frontend - Web"
   }
-  //console.log(url);
 
   const { data } = await axios.get(url);
   return data;
@@ -39,8 +38,6 @@ export function useIssues(
   level?: string,
   project?: string
 ) {
-  //console.log(`useIssues is fired with project: ${project}`);
-
   const query = useQuery<Page<Issue>, Error>(
     ["issues", page, status, level, project],
     () => getIssues(page, status, level, project),
@@ -49,12 +46,14 @@ export function useIssues(
 
   // Prefetch the next page!
   const queryClient = useQueryClient();
+
   useEffect(() => {
     if (query.data?.meta.hasNextPage) {
-      queryClient.prefetchQuery(["projects", page + 1], () =>
-        getIssues(page + 1)
+      queryClient.prefetchQuery(
+        ["projects", page + 1, status, level, project],
+        () => getIssues(page + 1, status, level, project)
       );
     }
-  }, [query.data, page, queryClient]);
+  }, [query.data, page, status, level, project, queryClient]);
   return query;
 }
