@@ -135,7 +135,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </InfoContainer>
       </TopContainer>
       <BottomContainer>
-        <Link href={Routes.issues} passHref>
+        <Link href={`${Routes.issues}?project=${name}`} passHref>
           <ViewIssuesAnchor>View issues</ViewIssuesAnchor>
         </Link>
       </BottomContainer>

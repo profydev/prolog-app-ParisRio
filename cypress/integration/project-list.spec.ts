@@ -32,6 +32,7 @@ describe("Project List", () => {
     it("renders the projects", () => {
       const languageNames = ["React", "Node.js", "Python"];
       const statusNames = ["Critical", "Warning", "Stable"];
+      const projectNames = ["Frontend - Web", "Backend", "ML Service"];
 
       // get all project cards
       cy.get("main")
@@ -45,7 +46,13 @@ describe("Project List", () => {
           cy.wrap($el).contains(statusNames[index]);
           cy.wrap($el)
             .find("a")
-            .should("have.attr", "href", "/dashboard/issues");
+            .should(
+              "have.attr",
+              "href",
+              `/dashboard/issues?project=${encodeURIComponent(
+                projectNames[index]
+              )}`
+            );
         });
     });
   });
