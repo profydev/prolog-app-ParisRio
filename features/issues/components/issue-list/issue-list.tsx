@@ -1,9 +1,15 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { FilterType, IssueFilter, useIssues } from "@features/issues";
+import {
+  FilterType,
+  IssueCard,
+  IssueFilter,
+  useIssues,
+} from "@features/issues";
 import { ProjectLanguage, useProjects } from "@features/projects";
-import { color, space, textFont } from "@styles/theme";
+import { color, space, textFont, theme, breakpoint } from "@styles/theme";
 import { IssueRow } from "./issue-row";
+import { useIsDesktop } from "@hooks/useIsDesktop";
 
 const TableContainer = styled.div`
   background: white;
@@ -61,9 +67,13 @@ const PageNumber = styled.span`
   ${textFont("sm", "medium")}
 `;
 
+const breakpointDesktop = breakpoint("desktop")({ theme });
+const themeDestkopWidth = parseFloat(breakpointDesktop) * 16;
+
 export function IssueList() {
   const router = useRouter();
   const page = Number(router.query.page || 1);
+  const isDesktop = useIsDesktop(themeDestkopWidth);
 
   const filters = {
     status: router.query.status,
@@ -108,50 +118,77 @@ export function IssueList() {
   );
   const { items, meta } = issuesPage.data || {};
 
+  //pending of mobile or desktop version switch between a list + card based Versus a table + table row
+  //Use of the useIsDesktop hook to determine if mobile or desktop
+  //Make a issue-list div that is a wrapper with a map through the items sent back by the API (such as the project list)
+  //this map render a sub component issue-card with the issue data and labels. Re-use of project-card
+  //After the issue list, a button to load more issues trigger the api call for the next page
+  //This button is disabled if there is no more page
+
+  const List = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+  `;
+
   return (
     <>
       <IssueFilter />
-      <TableContainer>
-        <Table>
-          <thead>
-            <HeaderRow>
-              <HeaderCell>Issue</HeaderCell>
-              <HeaderCell>Level</HeaderCell>
-              <HeaderCell>Events</HeaderCell>
-              <HeaderCell>Users</HeaderCell>
-            </HeaderRow>
-          </thead>
-          <tbody>
-            {(items || []).map((issue) => (
-              <IssueRow
-                key={issue.id}
-                issue={issue}
-                projectLanguage={projectIdToLanguage[issue.projectId]}
-              />
-            ))}
-          </tbody>
-        </Table>
-        <PaginationContainer>
-          <div>
-            <PaginationButton
-              onClick={() => navigateToPage(page - 1)}
-              disabled={page === 1}
-            >
-              Previous
-            </PaginationButton>
-            <PaginationButton
-              onClick={() => navigateToPage(page + 1)}
-              disabled={page === meta?.totalPages}
-            >
-              Next
-            </PaginationButton>
-          </div>
-          <PageInfo>
-            Page <PageNumber>{meta?.currentPage}</PageNumber> of{" "}
-            <PageNumber>{meta?.totalPages}</PageNumber>
-          </PageInfo>
-        </PaginationContainer>
-      </TableContainer>
+      {!isDesktop && (
+        <List>
+          {(items || []).map((issue) => (
+            <IssueCard
+              key={issue.id}
+              issue={issue}
+              projectLanguage={projectIdToLanguage[issue.projectId]}
+            />
+          ))}
+        </List>
+      )}
+      {isDesktop && (
+        <TableContainer>
+          <Table>
+            <thead>
+              <HeaderRow>
+                <HeaderCell>Issue</HeaderCell>
+                <HeaderCell>Level</HeaderCell>
+                <HeaderCell>Events</HeaderCell>
+                <HeaderCell>Users</HeaderCell>
+              </HeaderRow>
+            </thead>
+            <tbody>
+              {(items || []).map((issue) => (
+                <IssueRow
+                  key={issue.id}
+                  issue={issue}
+                  projectLanguage={projectIdToLanguage[issue.projectId]}
+                />
+              ))}
+            </tbody>
+          </Table>
+          <PaginationContainer>
+            <div>
+              <PaginationButton
+                onClick={() => navigateToPage(page - 1)}
+                disabled={page === 1}
+              >
+                Previous
+              </PaginationButton>
+              <PaginationButton
+                onClick={() => navigateToPage(page + 1)}
+                disabled={page === meta?.totalPages}
+              >
+                Next
+              </PaginationButton>
+            </div>
+            <PageInfo>
+              Page <PageNumber>{meta?.currentPage}</PageNumber> of{" "}
+              <PageNumber>{meta?.totalPages}</PageNumber>
+            </PageInfo>
+          </PaginationContainer>
+        </TableContainer>
+      )}
     </>
   );
 }
