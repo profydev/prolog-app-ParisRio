@@ -136,15 +136,23 @@ export function IssueList() {
     <>
       <IssueFilter />
       {!isDesktop && (
-        <List>
-          {(items || []).map((issue) => (
-            <IssueCard
-              key={issue.id}
-              issue={issue}
-              projectLanguage={projectIdToLanguage[issue.projectId]}
-            />
-          ))}
-        </List>
+        <>
+          <List>
+            {(items || []).map((issue) => (
+              <IssueCard
+                key={issue.id}
+                issue={issue}
+                projectLanguage={projectIdToLanguage[issue.projectId]}
+              />
+            ))}
+          </List>
+          <PaginationButton
+            onClick={() => navigateToPage(page + 1)}
+            disabled={page === meta?.totalPages}
+          >
+            Next
+          </PaginationButton>
+        </>
       )}
       {isDesktop && (
         <TableContainer>

@@ -46,6 +46,7 @@ const ErrorAndIconContainer = styled.div`
 
 const LanguageIcon = styled.img`
   margin-right: ${space(3)};
+  width: 40px;
 `;
 
 const ErrorTypeAndMessage = styled.div`
@@ -74,7 +75,9 @@ const InfoContainer = styled.div`
 `;
 
 const Issues = styled.div`
-  margin-left: ${space(6)};
+  margin-left: 0.625rem;
+  padding-left: ${space(6)};
+  padding-right: ${space(6)};
 
   &:first-of-type {
     margin-left: 0;
