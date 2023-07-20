@@ -155,15 +155,20 @@ export function IssueList() {
       {!isDesktop && (
         <>
           <List>
-            {data?.pages.map((page) =>
-              (page.items || []).map((issue) => (
-                <IssueCard
-                  key={issue.id}
-                  issue={issue}
-                  projectLanguage={projectIdToLanguage[issue.projectId]}
-                />
-              ))
-            )}
+            {
+              data?.pages.map((page) =>
+                (page.items || []).map((issue) => (
+                  <IssueCard
+                    key={issue.id}
+                    issue={issue}
+                    projectLanguage={projectIdToLanguage[issue.projectId]}
+                  />
+                ))
+              )
+              //working but next is adjusting the scroll position for the new items to load below the view
+              //not up
+              //update as well the query handling, not working well at the moment
+            }
           </List>
           <PaginationButton
             onClick={() => fetchNextPage()}
