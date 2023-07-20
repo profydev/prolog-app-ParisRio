@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useQuery, useQueryClient } from "react-query";
+import { useInfiniteQuery, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import type { Page } from "@typings/page.types";
 import type { Issue } from "../types/issue.types";
@@ -30,6 +30,27 @@ async function getIssues(
 
   const { data } = await axios.get(url);
   return data;
+}
+
+export function useInfiniteIssues(
+  status?: string,
+  level?: string,
+  project?: string
+) {
+  const query = useInfiniteQuery<Page<Issue>, Error>(
+    ["issues", status, level, project],
+    ({ pageParam = 1 }) => getIssues(pageParam, status, level, project),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        // If there's a next page, return the next page number, else return undefined
+        return lastPage.meta.hasNextPage
+          ? lastPage.meta.currentPage + 1
+          : undefined;
+      },
+      staleTime: 60000,
+    }
+  );
+  return query;
 }
 
 export function useIssues(

@@ -4,6 +4,7 @@ import {
   FilterType,
   IssueCard,
   IssueFilter,
+  useInfiniteIssues,
   useIssues,
 } from "@features/issues";
 import { ProjectLanguage, useProjects } from "@features/projects";
@@ -52,9 +53,14 @@ const PaginationButton = styled.button`
   border: 1px solid ${color("gray", 300)};
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
   border-radius: 6px;
+  width: 100%;
 
   &:not(:first-of-type) {
     margin-left: ${space(3)};
+  }
+
+  @media (min-width: ${breakpoint("desktop")}) {
+    width: unset;
   }
 `;
 
@@ -95,6 +101,12 @@ export function IssueList() {
   );
   const projects = useProjects();
 
+  const infiniteIssuesPage = useInfiniteIssues(
+    filters.status,
+    filters.level,
+    filters.project
+  );
+
   if (projects.isLoading || issuesPage.isLoading) {
     return <div>Loading</div>;
   }
@@ -118,6 +130,11 @@ export function IssueList() {
   );
   const { items, meta } = issuesPage.data || {};
 
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    infiniteIssuesPage || {};
+
+  console.log(data?.pages);
+
   //pending of mobile or desktop version switch between a list + card based Versus a table + table row
   //Use of the useIsDesktop hook to determine if mobile or desktop
   //Make a issue-list div that is a wrapper with a map through the items sent back by the API (such as the project list)
@@ -138,19 +155,21 @@ export function IssueList() {
       {!isDesktop && (
         <>
           <List>
-            {(items || []).map((issue) => (
-              <IssueCard
-                key={issue.id}
-                issue={issue}
-                projectLanguage={projectIdToLanguage[issue.projectId]}
-              />
-            ))}
+            {data?.pages.map((page) =>
+              (page.items || []).map((issue) => (
+                <IssueCard
+                  key={issue.id}
+                  issue={issue}
+                  projectLanguage={projectIdToLanguage[issue.projectId]}
+                />
+              ))
+            )}
           </List>
           <PaginationButton
-            onClick={() => navigateToPage(page + 1)}
-            disabled={page === meta?.totalPages}
+            onClick={() => fetchNextPage()}
+            disabled={!hasNextPage || isFetchingNextPage}
           >
-            Next
+            Load more
           </PaginationButton>
         </>
       )}

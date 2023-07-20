@@ -13,6 +13,7 @@ export type Issue = {
   level: IssueLevel;
   numEvents: number;
   numUsers: number;
+  nextPage?: number;
 };
 
 export type SelectFilterOptionType = {
