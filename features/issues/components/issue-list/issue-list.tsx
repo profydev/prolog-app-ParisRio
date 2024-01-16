@@ -2,10 +2,10 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import {
   FilterType,
-  IssueCard,
   IssueFilter,
-  useInfiniteIssues,
   useIssues,
+  IssueCard,
+  useInfiniteIssues,
 } from "@features/issues";
 import { ProjectLanguage, useProjects } from "@features/projects";
 import { color, space, textFont, theme, breakpoint } from "@styles/theme";
@@ -58,7 +58,6 @@ const PaginationButton = styled.button`
   &:not(:first-of-type) {
     margin-left: ${space(3)};
   }
-
   @media (min-width: ${breakpoint("desktop")}) {
     width: unset;
   }
@@ -71,6 +70,13 @@ const PageInfo = styled.div`
 
 const PageNumber = styled.span`
   ${textFont("sm", "medium")}
+`;
+
+const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
 `;
 
 const breakpointDesktop = breakpoint("desktop")({ theme });
@@ -132,22 +138,6 @@ export function IssueList() {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     infiniteIssuesPage || {};
-
-  console.log(data?.pages);
-
-  //pending of mobile or desktop version switch between a list + card based Versus a table + table row
-  //Use of the useIsDesktop hook to determine if mobile or desktop
-  //Make a issue-list div that is a wrapper with a map through the items sent back by the API (such as the project list)
-  //this map render a sub component issue-card with the issue data and labels. Re-use of project-card
-  //After the issue list, a button to load more issues trigger the api call for the next page
-  //This button is disabled if there is no more page
-
-  const List = styled.div`
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    margin: 0;
-  `;
 
   return (
     <>
