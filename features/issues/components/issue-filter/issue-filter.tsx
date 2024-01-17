@@ -57,13 +57,14 @@ const useFilter = () => {
   const handleFilters = (newFilter: FilterType) => {
     let query = { ...router.query };
     //Need to handle the cases where a select or input is reset (value set to undefined),
-    //Then the query should be deleted
+    //Then the query should be deleted and page is reset
     for (const key in newFilter) {
       //Use FilterType keys to loop through query which is of type QueryType
       const value = newFilter[key as keyof FilterType];
       if (value === undefined || value === "") {
         if (key in query) {
           delete query[key];
+          query = { ...query, page: "1" };
         }
       }
       //If the newFilter value exist, push it to the router query and reset the page number.

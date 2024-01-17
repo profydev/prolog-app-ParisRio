@@ -1,9 +1,16 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { FilterType, IssueFilter, useIssues } from "@features/issues";
+import {
+  FilterType,
+  IssueFilter,
+  useIssues,
+  IssueCard,
+  useInfiniteIssues,
+} from "@features/issues";
 import { ProjectLanguage, useProjects } from "@features/projects";
-import { color, space, textFont } from "@styles/theme";
+import { color, space, textFont, theme, breakpoint } from "@styles/theme";
 import { IssueRow } from "./issue-row";
+import { useIsDesktop } from "@hooks/useIsDesktop";
 
 const TableContainer = styled.div`
   background: white;
@@ -46,9 +53,13 @@ const PaginationButton = styled.button`
   border: 1px solid ${color("gray", 300)};
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
   border-radius: 6px;
+  width: 100%;
 
   &:not(:first-of-type) {
     margin-left: ${space(3)};
+  }
+  @media (min-width: ${breakpoint("desktop")}) {
+    width: unset;
   }
 `;
 
@@ -61,9 +72,20 @@ const PageNumber = styled.span`
   ${textFont("sm", "medium")}
 `;
 
+const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+`;
+
+const breakpointDesktop = breakpoint("desktop")({ theme });
+const themeDestkopWidth = parseFloat(breakpointDesktop) * 16;
+
 export function IssueList() {
   const router = useRouter();
   const page = Number(router.query.page || 1);
+  const isDesktop = useIsDesktop(themeDestkopWidth);
 
   const filters = {
     status: router.query.status,
@@ -85,7 +107,17 @@ export function IssueList() {
   );
   const projects = useProjects();
 
-  if (projects.isLoading || issuesPage.isLoading) {
+  const infiniteIssuesPage = useInfiniteIssues(
+    filters.status,
+    filters.level,
+    filters.project
+  );
+
+  if (
+    projects.isLoading ||
+    issuesPage.isLoading ||
+    infiniteIssuesPage.isLoading
+  ) {
     return <div>Loading</div>;
   }
 
@@ -94,9 +126,15 @@ export function IssueList() {
     return <div>Error loading projects: {projects.error.message}</div>;
   }
 
-  if (issuesPage.isError) {
+  if (issuesPage.isError || infiniteIssuesPage.isError) {
     console.error(issuesPage.error);
-    return <div>Error loading issues: {issuesPage.error.message}</div>;
+    if (issuesPage.isError) {
+      return <div>Error loading issues: {issuesPage.error.message}</div>;
+    } else if (infiniteIssuesPage.isError) {
+      return (
+        <div>Error loading issues: {infiniteIssuesPage.error.message}</div>
+      );
+    }
   }
 
   const projectIdToLanguage = (projects.data || []).reduce(
@@ -108,50 +146,76 @@ export function IssueList() {
   );
   const { items, meta } = issuesPage.data || {};
 
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    infiniteIssuesPage || {};
+
   return (
     <>
       <IssueFilter />
-      <TableContainer>
-        <Table>
-          <thead>
-            <HeaderRow>
-              <HeaderCell>Issue</HeaderCell>
-              <HeaderCell>Level</HeaderCell>
-              <HeaderCell>Events</HeaderCell>
-              <HeaderCell>Users</HeaderCell>
-            </HeaderRow>
-          </thead>
-          <tbody>
-            {(items || []).map((issue) => (
-              <IssueRow
-                key={issue.id}
-                issue={issue}
-                projectLanguage={projectIdToLanguage[issue.projectId]}
-              />
-            ))}
-          </tbody>
-        </Table>
-        <PaginationContainer>
-          <div>
-            <PaginationButton
-              onClick={() => navigateToPage(page - 1)}
-              disabled={page === 1}
-            >
-              Previous
-            </PaginationButton>
-            <PaginationButton
-              onClick={() => navigateToPage(page + 1)}
-              disabled={page === meta?.totalPages}
-            >
-              Next
-            </PaginationButton>
-          </div>
-          <PageInfo>
-            Page <PageNumber>{meta?.currentPage}</PageNumber> of{" "}
-            <PageNumber>{meta?.totalPages}</PageNumber>
-          </PageInfo>
-        </PaginationContainer>
-      </TableContainer>
+      {!isDesktop && (
+        <>
+          <List id="mobile-issue-list-container">
+            {data?.pages.map((page) =>
+              (page.items || []).map((issue) => (
+                <IssueCard
+                  key={issue.id}
+                  issue={issue}
+                  projectLanguage={projectIdToLanguage[issue.projectId]}
+                />
+              ))
+            )}
+          </List>
+          <PaginationButton
+            onClick={() => fetchNextPage()}
+            disabled={!hasNextPage || isFetchingNextPage}
+          >
+            Load more
+          </PaginationButton>
+        </>
+      )}
+      {isDesktop && (
+        <TableContainer>
+          <Table>
+            <thead>
+              <HeaderRow>
+                <HeaderCell>Issue</HeaderCell>
+                <HeaderCell>Level</HeaderCell>
+                <HeaderCell>Events</HeaderCell>
+                <HeaderCell>Users</HeaderCell>
+              </HeaderRow>
+            </thead>
+            <tbody>
+              {(items || []).map((issue) => (
+                <IssueRow
+                  key={issue.id}
+                  issue={issue}
+                  projectLanguage={projectIdToLanguage[issue.projectId]}
+                />
+              ))}
+            </tbody>
+          </Table>
+          <PaginationContainer>
+            <div>
+              <PaginationButton
+                onClick={() => navigateToPage(page - 1)}
+                disabled={page === 1}
+              >
+                Previous
+              </PaginationButton>
+              <PaginationButton
+                onClick={() => navigateToPage(page + 1)}
+                disabled={page === meta?.totalPages}
+              >
+                Next
+              </PaginationButton>
+            </div>
+            <PageInfo>
+              Page <PageNumber>{meta?.currentPage}</PageNumber> of{" "}
+              <PageNumber>{meta?.totalPages}</PageNumber>
+            </PageInfo>
+          </PaginationContainer>
+        </TableContainer>
+      )}
     </>
   );
 }

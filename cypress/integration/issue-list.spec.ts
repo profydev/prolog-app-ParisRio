@@ -20,19 +20,19 @@ describe("Issue List", () => {
 
     // open issues page
     cy.visit(`http://localhost:3000/dashboard/issues`);
-
+    // Set the view port to desktop in order to get access to Previous / Next button that are only available in Desktop view mode
     // wait for request to resolve
     cy.wait(["@getProjects", "@getIssuesPage1"]);
     cy.wait(500);
-
-    // set button aliases
-    cy.get("button").contains("Previous").as("prev-button");
-    cy.get("button").contains("Next").as("next-button");
   });
 
   context("desktop resolution", () => {
     beforeEach(() => {
       cy.viewport(1025, 900);
+      cy.wait(500);
+      // set button aliases for desktop resolution
+      cy.get("button").contains("Previous").as("prev-button");
+      cy.get("button").contains("Next").as("next-button");
     });
 
     it("renders the issues", () => {
@@ -82,6 +82,49 @@ describe("Issue List", () => {
       cy.wait(["@getProjects", "@getIssuesPage2"]);
       cy.wait(1500);
       cy.contains("Page 2 of 3");
+    });
+  });
+
+  context("Mobile resolution", () => {
+    beforeEach(() => {
+      cy.viewport(1000, 900);
+      cy.wait(500);
+      cy.get("button").contains("Load more").as("next-button");
+    });
+
+    it("renders the issues", () => {
+      cy.get("main")
+        .find("#mobile-issue-list-container #mobile-issue-list-card")
+        .each(($el, index) => {
+          const issue = mockIssues1.items[index];
+          const firstLineOfStackTrace = issue.stack.split("\n")[1].trim();
+          cy.wrap($el).contains(issue.name);
+          cy.wrap($el).contains(issue.message);
+          cy.wrap($el).contains(issue.numEvents);
+          cy.wrap($el).contains(issue.numUsers);
+          cy.wrap($el).contains(firstLineOfStackTrace);
+        });
+    });
+
+    it("paginates the data", () => {
+      // test navigation to load more items
+      cy.get("@next-button").click();
+      cy.wait(500);
+      // test that last items of the second page has been loaded
+      cy.get("#mobile-issue-list-container #mobile-issue-list-card")
+        .last()
+        .contains(mockIssues2.items[9].message);
+
+      // test navigation to third and last page
+      cy.get("@next-button").click();
+      cy.wait(500);
+      // test that last items of the third page has been loaded
+      cy.get("#mobile-issue-list-container #mobile-issue-list-card")
+        .last()
+        .contains(mockIssues3.items[7].message);
+
+      // test that 'Load more' button is disable after the third loading. 3 pages out of 3
+      cy.get("@next-button").should("have.attr", "disabled");
     });
   });
 });
