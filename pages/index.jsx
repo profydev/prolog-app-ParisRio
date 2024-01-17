@@ -1,15 +1,32 @@
+import Link from "next/link";
 import styled from "styled-components";
 import { Routes } from "@config/routes";
+import { color, space, textFont } from "@styles/theme";
+import { ButtonCTA, ButtonCtaSize } from "@features/ui";
 
 const Header = styled.header`
   width: 100%;
   height: 80px;
-  padding: 0 2rem;
+  padding: 0 7rem;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: white;
+`;
+const ItemContainer = styled.div`
+  display: flex;
+`;
+const Item = styled.div`
+  /* margin-bottom: ${space(4)}; */
+  padding: ${space(4)};
+  color: ${color("gray", 500)};
+  ${textFont("md", "medium")}
+`;
+const DashBoardAnchor = styled.a`
+  text-decoration: none;
+  color: unset;
+  /* ${textFont("sm", "medium")} */
 `;
 
 const ContactButton = styled.button`
@@ -34,7 +51,33 @@ const IssuesPage = () => {
       <Header>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/icons/logo-large.svg" alt="Prolog logo" />
-        <a href={Routes.projects}>Dashboard</a>
+        <ItemContainer>
+          <Item>
+            <Link href={Routes.home} passHref>
+              <DashBoardAnchor>Home</DashBoardAnchor>
+            </Link>
+          </Item>
+          <Item>
+            <Link href="/products" passHref>
+              <DashBoardAnchor>Products</DashBoardAnchor>
+            </Link>
+          </Item>
+          <Item>
+            <Link href="/documentation" passHref>
+              <DashBoardAnchor>Documentation</DashBoardAnchor>
+            </Link>
+          </Item>
+          <Item>
+            <Link href="/pricing" passHref>
+              <DashBoardAnchor>Pricing</DashBoardAnchor>
+            </Link>
+          </Item>
+        </ItemContainer>
+        <ButtonCTA size={ButtonCtaSize.lg}>
+          <Link href={Routes.projects} passHref>
+            <DashBoardAnchor>Open Dashboard</DashBoardAnchor>
+          </Link>
+        </ButtonCTA>
       </Header>
       <ContactButton
         onClick={() =>
