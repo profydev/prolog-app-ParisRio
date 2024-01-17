@@ -101,7 +101,7 @@ export function IssueCard({ projectLanguage, issue }: IssueRowProps) {
   const { name, message, stack, level, numEvents, numUsers } = issue;
   const firstLineOfStackTrace = stack.split("\n")[1];
   return (
-    <Container>
+    <Container id="mobile-issue-list-card">
       <ErrorAndIconContainer>
         <LanguageIcon
           src={`/icons/${projectLanguage}.svg`}

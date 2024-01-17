@@ -41,7 +41,7 @@ export function useInfiniteIssues(
     ["issues", status, level, project],
     ({ pageParam = 1 }) => getIssues(pageParam, status, level, project),
     {
-      getNextPageParam: (lastPage, allPages) => {
+      getNextPageParam: (lastPage) => {
         // If there's a next page, return the next page number, else return undefined
         return lastPage.meta.hasNextPage
           ? lastPage.meta.currentPage + 1

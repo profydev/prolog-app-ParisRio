@@ -113,7 +113,11 @@ export function IssueList() {
     filters.project
   );
 
-  if (projects.isLoading || issuesPage.isLoading) {
+  if (
+    projects.isLoading ||
+    issuesPage.isLoading ||
+    infiniteIssuesPage.isLoading
+  ) {
     return <div>Loading</div>;
   }
 
@@ -122,9 +126,15 @@ export function IssueList() {
     return <div>Error loading projects: {projects.error.message}</div>;
   }
 
-  if (issuesPage.isError) {
+  if (issuesPage.isError || infiniteIssuesPage.isError) {
     console.error(issuesPage.error);
-    return <div>Error loading issues: {issuesPage.error.message}</div>;
+    if (issuesPage.isError) {
+      return <div>Error loading issues: {issuesPage.error.message}</div>;
+    } else if (infiniteIssuesPage.isError) {
+      return (
+        <div>Error loading issues: {infiniteIssuesPage.error.message}</div>
+      );
+    }
   }
 
   const projectIdToLanguage = (projects.data || []).reduce(
@@ -144,21 +154,16 @@ export function IssueList() {
       <IssueFilter />
       {!isDesktop && (
         <>
-          <List>
-            {
-              data?.pages.map((page) =>
-                (page.items || []).map((issue) => (
-                  <IssueCard
-                    key={issue.id}
-                    issue={issue}
-                    projectLanguage={projectIdToLanguage[issue.projectId]}
-                  />
-                ))
-              )
-              //working but next is adjusting the scroll position for the new items to load below the view
-              //not up
-              //update as well the query handling, not working well at the moment
-            }
+          <List id="mobile-issue-list-container">
+            {data?.pages.map((page) =>
+              (page.items || []).map((issue) => (
+                <IssueCard
+                  key={issue.id}
+                  issue={issue}
+                  projectLanguage={projectIdToLanguage[issue.projectId]}
+                />
+              ))
+            )}
           </List>
           <PaginationButton
             onClick={() => fetchNextPage()}
